@@ -6,6 +6,7 @@ import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
+import com.rightapps.camprompter.audio.MicManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -38,6 +39,11 @@ class MainActivity : Activity() {
                 splashLyt.visibility = View.GONE
             }
         }
+
+        Log.d(TAG, "onResume: Available Mics: " + MicManager.getAvailable(applicationContext)
+            .joinToString(", ") {
+                "Type: ${it.type}, Name: ${it.productName}"
+            })
     }
 
     override fun onPause() {
