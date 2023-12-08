@@ -10,8 +10,9 @@
         android:id="@+id/topbarMenuBtn"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:src="@android:drawable/ic_dialog_info"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

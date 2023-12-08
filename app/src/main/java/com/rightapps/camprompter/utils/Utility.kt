@@ -18,16 +18,5 @@ object Utility {
         context.startActivity(intent)
     }
 
-    fun getPermissionAlert(
-        activity: AppCompatActivity,
-        message: String,
-        type: KAlertDialogType,
-        onConfirmClick: KAlertDialog.KAlertClickListener
-    ): KAlertDialog = KAlertDialog(activity, true).apply {
-        changeAlertType(type.ordinal)
-        setTitle(context.getString(R.string.permission_required))
-        contentText = message
-        setCancelable(false)
-        setConfirmClickListener("OK", onConfirmClick)
-    }
+
 }

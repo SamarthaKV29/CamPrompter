@@ -4,6 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="128dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <include layout="@layout/topbar" />
 
     <RelativeLayout
@@ -25,6 +34,7 @@
             android:layout_height="64dp"
             android:layout_centerInParent="false"
             android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"
             app:srcCompat="@drawable/camera_logo" />
 
         <TextView
@@ -36,5 +46,4 @@
             android:layout_centerHorizontal="true"
             android:text="@string/app_name" />
     </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
