@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.CamPrompter" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.CamPrompter" parent="@style/Base.Theme.CamPrompter">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/md_indigo_500</item>
         <item name="colorPrimaryVariant">@color/md_indigo_700</item>
@@ -12,14 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-    </style>
-    <!-- Base application theme. -->
-    <style name="Base.Theme.CamPrompter" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
     </style>
 
 </resources>

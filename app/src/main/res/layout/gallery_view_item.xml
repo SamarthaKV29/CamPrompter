@@ -1,16 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:padding="2dp">
+    android:layout_height="@dimen/_200dp"
+    android:layout_gravity="center">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/videoThumbnail"
-        android:layout_width="@dimen/_200dp"
-        android:layout_height="@dimen/_200dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:scaleType="fitCenter"
         android:background="@android:drawable/alert_dark_frame"
-        android:scaleType="centerCrop"
         android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
     <!-- Other views (like video title, duration, etc.) -->

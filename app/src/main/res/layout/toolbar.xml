@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
-    android:clickable="true"
-    app:navigationIcon="?attr/homeAsUpIndicator">
+    android:layout_height="wrap_content">
 
-    <!--    <androidx.appcompat.widget.AppCompatImageButton-->
-    <!--        android:id="@+id/topbarMenuBtn"-->
-    <!--        android:layout_width="16dp"-->
-    <!--        android:layout_height="16dp"-->
-    <!--        android:src="@android:drawable/ic_dialog_info"-->
-    <!--        android:layout_gravity="center|end"-->
-    <!--        android:layout_marginEnd="8dp" />-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:clickable="true"
+        app:menu="@menu/gallery_menu"
+        app:navigationIcon="?attr/homeAsUpIndicator">
 
-</androidx.appcompat.widget.Toolbar>
+        <!--    <androidx.appcompat.widget.AppCompatImageButton-->
+        <!--        android:id="@+id/topbarMenuBtn"-->
+        <!--        android:layout_width="16dp"-->
+        <!--        android:layout_height="16dp"-->
+        <!--        android:src="@android:drawable/ic_dialog_info"-->
+        <!--        android:layout_gravity="center|end"-->
+        <!--        android:layout_marginEnd="8dp" />-->
+
+    </androidx.appcompat.widget.Toolbar>
+</com.google.android.material.appbar.AppBarLayout>

@@ -12,6 +12,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rightapps.camprompter.R
@@ -28,16 +29,29 @@ class GalleryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate: ")
         setContentView(R.layout.activity_gallery)
-//        findViewById<Toolbar>(R.id.toolbar)?.let { toolbar ->
-//            setSupportActionBar(toolbar)
-//            supportActionBar?.apply {
-//                setDisplayHomeAsUpEnabled(true)
-//                setDisplayShowHomeEnabled(true)
-//            }
-//            toolbar.setNavigationOnClickListener {
-//                onBackPressed()
-//            }
-//        }
+        findViewById<Toolbar>(R.id.toolbar)?.let { toolbar ->
+            setSupportActionBar(toolbar)
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setDisplayShowHomeEnabled(true)
+            }
+            title = getString(R.string.title_gallery)
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menuSettingsBtn -> {
+                        Log.d(TAG, "onCreate: Settins clicked")
+                    }
+
+                    else -> {
+                        Log.d(TAG, "Unknown clicked: ${it.title}")
+                    }
+                }
+                false
+            }
+            toolbar.setNavigationOnClickListener {
+                onBackPressed()
+            }
+        }
         galleryRV = findViewById(R.id.galleryRV)
     }
 
@@ -114,5 +128,10 @@ class GalleryActivity : AppCompatActivity() {
         )
         finish()
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.gallery_menu, menu)
+//        return true
+//    }
 
 }
