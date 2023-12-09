@@ -1,14 +1,10 @@
 package com.rightapps.camprompter.audio
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.media.AudioManager
 import android.media.MediaRecorder
 import android.os.Build
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 
 object MicManager {
     const val TAG: String = "MicManager"
@@ -31,7 +27,7 @@ object MicManager {
     fun getId(context: Context, type: InputType): Int =
         getAvailableMics(context).find { it.type == type.ordinal }?.id ?: -1
 
-    suspend fun switchMic(context: Context, type: InputType, mediaRecorder: MediaRecorder) {
+    fun switchMic(context: Context, type: InputType, mediaRecorder: MediaRecorder) {
         val micId = getId(context, type)
         getAudioManager(context).getDevices(AudioManager.GET_DEVICES_INPUTS)
             .first { it.id == micId }?.let { device ->

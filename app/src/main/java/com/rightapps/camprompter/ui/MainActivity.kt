@@ -3,7 +3,6 @@ package com.rightapps.camprompter.ui
 import PermissionUtils
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +11,7 @@ import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.utils.KAlertDialogType
 import com.rightapps.camprompter.utils.Utility
+import com.rightapps.camprompter.utils.ViewUtils.gone
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -25,35 +25,34 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var splashLyt: RelativeLayout
     private var topDialog: KAlertDialog? = null
-    private lateinit var topbarMenuBtn: ImageButton
+//    private lateinit var topbarMenuBtn: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate: ")
         setContentView(R.layout.activity_main)
         splashLyt = findViewById(R.id.splashLyt)
-        topbarMenuBtn = findViewById(R.id.topbarMenuBtn)
-        topbarMenuBtn.setOnClickListener {
-            Utility.showAppSettingsPage(this)
-        }
+//        topbarMenuBtn = findViewById(R.id.topbarMenuBtn)
+//        topbarMenuBtn.setOnClickListener {
+//            Utility.showAppSettingsPage(this)
+//        }
         supportFragmentManager.commit {
-            replace(R.id.fragmentHolder, CameraFragment())
+            replace(R.id.cameraFragmentHolder, CameraFragment())
             setReorderingAllowed(true)
+            replace(R.id.bottomBarHolder, BottomMenuFragment())
             // addToBackStack("CameraView")
         }
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart: ")
+        Log.d(TAG, "onStart: $permissionRequestCount")
         PermissionUtils.checkPermissions(this)
         permissionRequestCount += 1
 
-        CoroutineScope(Dispatchers.IO).launch {
-            delay(3000)
-            runOnUiThread {
-                splashLyt.visibility = View.GONE
-            }
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(2000)
+            splashLyt.gone()
         }
 
 
@@ -67,9 +66,9 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         PermissionUtils.onRequestPermissionsResult(this, requestCode, grantResults) {
             val message = when (permissionRequestCount) {
-                1 -> "Please grant Audio Record permission"
-                2 -> "Please grant from settings page!"
-                else -> "Audio permission required!"
+                1 -> "Please grant ${permissions.joinToString(", ")} permission"
+                2 -> "Please grant ${permissions.joinToString(", ")} permission from settings page!"
+                else -> "Permission required!"
             }
             if (permissionRequestCount >= 2) {
                 permissionRequestCount = 0
