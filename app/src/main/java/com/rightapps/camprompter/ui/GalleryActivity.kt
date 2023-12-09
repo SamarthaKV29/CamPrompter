@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rightapps.camprompter.R
+import com.rightapps.camprompter.utils.Utility
 import java.io.File
 
 class GalleryActivity : AppCompatActivity() {
@@ -30,7 +31,8 @@ class GalleryActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate: ")
         setContentView(R.layout.activity_gallery)
         findViewById<Toolbar>(R.id.toolbar)?.let { toolbar ->
-            setSupportActionBar(toolbar)
+//            setSupportActionBar(toolbar) // This causes menu not be shown
+
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
                 setDisplayShowHomeEnabled(true)
@@ -38,8 +40,12 @@ class GalleryActivity : AppCompatActivity() {
             title = getString(R.string.title_gallery)
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.menuSettingsBtn -> {
-                        Log.d(TAG, "onCreate: Settins clicked")
+                    R.id.menuAppInfo -> {
+                        Utility.showAppSettingsPage(applicationContext)
+                    }
+
+                    R.id.menuPref -> {
+                        Log.d(TAG, "onCreate: Prefs clicked")
                     }
 
                     else -> {
