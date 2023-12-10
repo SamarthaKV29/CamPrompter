@@ -13,9 +13,11 @@ import com.otaliastudios.cameraview.controls.Mode
 import com.otaliastudios.cameraview.gesture.Gesture
 import com.otaliastudios.cameraview.gesture.GestureAction
 import com.rightapps.camprompter.R
-import com.rightapps.camprompter.utils.Utility
+import com.rightapps.camprompter.utils.FileUtils
+import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.ViewUtils.blink
 import com.rightapps.camprompter.utils.ViewUtils.gone
+import com.rightapps.camprompter.utils.ViewUtils.show
 import kotlinx.coroutines.Job
 
 
@@ -55,26 +57,29 @@ class CameraFragment : Fragment(R.layout.fragment_camera_view) {
 
                 override fun onVideoRecordingStart() {
                     super.onVideoRecordingStart()
+                    recordingIcon.show()
                     oldJob = recordingIcon.blink(true)
                 }
 
                 override fun onVideoRecordingEnd() {
                     super.onVideoRecordingEnd()
                     recordingIcon.blink(false, job = oldJob)
+                    recordingIcon.gone()
                 }
             })
-            sharedGlue.isRecording.observe(viewLifecycleOwner) { isRecording ->
-                val outputFile = Utility.getOutputMediaFile(context)
-                if (isRecording) {
-                    mainCameraView.takeVideo(outputFile)
-                } else {
-                    if (mainCameraView.isTakingVideo) {
-                        mainCameraView.stopVideo()
-                        MediaScannerConnection.scanFile(
-                            context,
-                            arrayOf(outputFile.toString()),
-                            null, null
-                        );
+            sharedGlue.isRecording.observe(viewLifecycleOwner) { startRecording ->
+                FileUtils.getOutputMediaFile(context)?.let { outputFile ->
+                    if (startRecording) {
+                        mainCameraView.takeVideo(outputFile)
+                    } else {
+                        if (mainCameraView.isTakingVideo) {
+                            mainCameraView.stopVideo()
+                            MediaScannerConnection.scanFile(
+                                context,
+                                arrayOf(outputFile.toString()),
+                                null, null
+                            );
+                        }
                     }
                 }
             }

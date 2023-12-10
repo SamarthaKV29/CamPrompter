@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.rightapps.camprompter.ui.gallery.GalleryGridAdapter
 
 
 class EmptyRecyclerView : RecyclerView {
@@ -50,5 +51,9 @@ class EmptyRecyclerView : RecyclerView {
     fun setEmptyView(emptyView: View?) {
         this.emptyView = emptyView
         checkIfEmpty()
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(adapter: GalleryGridAdapter, item: Any?)
     }
 }

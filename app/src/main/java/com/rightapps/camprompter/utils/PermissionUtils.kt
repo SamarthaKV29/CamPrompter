@@ -39,7 +39,6 @@ object PermissionUtils {
     }
 
     fun onRequestPermissionsResult(
-        activity: Activity,
         requestCode: Int,
         grantResults: IntArray,
         onDenied: () -> Unit = {}

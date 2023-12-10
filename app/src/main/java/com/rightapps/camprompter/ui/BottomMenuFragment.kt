@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.rightapps.camprompter.R
+import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.Utility
 
 class BottomMenuFragment : Fragment(R.layout.fragment_bottom_menu) {

@@ -37,9 +37,6 @@ android {
         jvmTarget = "1.8"
     }
 
-//    sourceSets {
-//        getByName("main").java.srcDir("app/libs/ScrollGalleryView")
-//    }
 }
 
 dependencies {
@@ -55,6 +52,7 @@ dependencies {
     implementation("io.github.tutorialsandroid:progressx:7.0.0")
 
     implementation("com.otaliastudios:cameraview:2.7.2")
+    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

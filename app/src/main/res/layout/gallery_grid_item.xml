@@ -13,5 +13,12 @@
         android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
     <!-- Other views (like video title, duration, etc.) -->
-
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/isSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="4dp"
+        android:visibility="gone"
+        android:src="@android:drawable/checkbox_off_background" />
 </FrameLayout>

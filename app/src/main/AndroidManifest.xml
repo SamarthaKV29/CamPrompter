@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.GalleryActivity"
+            android:name=".ui.gallery.GalleryActivity"
             android:exported="true">
 
         </activity>

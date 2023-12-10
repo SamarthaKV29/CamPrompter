@@ -3,7 +3,6 @@ package com.rightapps.camprompter.ui
 import PermissionUtils
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageButton
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
@@ -59,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        PermissionUtils.onRequestPermissionsResult(this, requestCode, grantResults) {
+        PermissionUtils.onRequestPermissionsResult(requestCode, grantResults) {
             val message = when (permissionRequestCount) {
                 1 -> "Please grant ${permissions.joinToString(", ")} permission"
                 2 -> "Please grant ${permissions.joinToString(", ")} permission from settings page!"
