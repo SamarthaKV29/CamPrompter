@@ -25,17 +25,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var splashLyt: RelativeLayout
     private var topDialog: KAlertDialog? = null
-//    private lateinit var topbarMenuBtn: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate: ")
         setContentView(R.layout.activity_main)
         splashLyt = findViewById(R.id.splashLyt)
-//        topbarMenuBtn = findViewById(R.id.topbarMenuBtn)
-//        topbarMenuBtn.setOnClickListener {
-//            Utility.showAppSettingsPage(this)
-//        }
         supportFragmentManager.commit {
             replace(R.id.cameraFragmentHolder, CameraFragment())
             setReorderingAllowed(true)

@@ -5,4 +5,5 @@ import androidx.lifecycle.ViewModel
 
 class UISharedGlue : ViewModel() {
     val isRecording = MutableLiveData<Boolean>()
+    val galleryFragmentType = MutableLiveData<GalleryActivity.Companion.GalleryFragmentType>()
 }

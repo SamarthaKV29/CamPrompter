@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menuMultiSelect"
+        android:icon="@android:drawable/checkbox_on_background"
+        android:title="@string/select_multiple"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menuPref"
         android:icon="@android:drawable/ic_menu_manage"
         android:title="@string/options"
