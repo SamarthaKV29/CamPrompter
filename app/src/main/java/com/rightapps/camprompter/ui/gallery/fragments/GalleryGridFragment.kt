@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
@@ -80,11 +81,25 @@ class GalleryGridFragment : Fragment(R.layout.fragment_gallery_grid) {
         FileUtils.rescanMedia(requireContext()) { _, _ ->
             requireActivity().runOnUiThread {
                 gridAdapter =
-                    GalleryGridAdapter(fetchVideos(requireContext()), isSelecting, selectedItems)
+                    GalleryGridAdapter(
+                        fetchVideos(requireContext()),
+                        isSelecting,
+                        selectedItems,
+                        getItemClickListener()
+                    )
                 galleryRV.adapter = gridAdapter
                 isLoading.postValue(false)
             }
         }
+
+    private fun getItemClickListener() = object : EmptyRecyclerView.OnItemClickListener {
+        override fun onItemClick(adapter: GalleryGridAdapter, item: GalleryGridAdapter.Video) {
+            requireActivity().supportFragmentManager.commit {
+                replace(R.id.galleryFragmentHolder, GalleryVideoViewFragment(item.uri))
+                addToBackStack("grid")
+            }
+        }
+    }
 
     private fun fetchVideos(context: Context): List<GalleryGridAdapter.Video> {
         val videos = mutableListOf<GalleryGridAdapter.Video>()

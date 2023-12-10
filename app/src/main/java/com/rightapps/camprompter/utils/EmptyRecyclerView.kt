@@ -54,6 +54,6 @@ class EmptyRecyclerView : RecyclerView {
     }
 
     interface OnItemClickListener {
-        fun onItemClick(adapter: GalleryGridAdapter, item: Any?)
+        fun onItemClick(adapter: GalleryGridAdapter, item: GalleryGridAdapter.Video)
     }
 }

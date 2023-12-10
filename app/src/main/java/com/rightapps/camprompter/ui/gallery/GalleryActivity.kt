@@ -87,14 +87,7 @@ class GalleryActivity : AppCompatActivity() {
                 false
             }
             toolbar.setNavigationOnClickListener {
-                if (sharedGlue.galleryFragmentType.value == GalleryFragmentType.GalleryVideoView) {
-                    supportFragmentManager.commit {
-                        replace(R.id.galleryFragmentHolder, GalleryGridFragment())
-                        setReorderingAllowed(true)
-                    }
-                } else {
-                    onBackPressed()
-                }
+                onBackPressed()
             }
             sharedGlue.isSelectingGalleryItems.observe(this) { isSelecting ->
                 toolbar.menu.findItem(R.id.menuMultiSelect).icon =
@@ -110,18 +103,6 @@ class GalleryActivity : AppCompatActivity() {
                 toolbar.menu.findItem(R.id.menuDeleteSelected).isVisible = it
             }
         }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        startActivity(
-            Intent(this, MainActivity::class.java).addFlags(
-                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or
-                        Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-            )
-        )
-        finish()
     }
 
 }
