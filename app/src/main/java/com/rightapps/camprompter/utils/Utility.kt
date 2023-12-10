@@ -15,13 +15,16 @@ import java.util.Locale
 
 
 object Utility {
-    const val TAG: String = "Utility"
+    private const val TAG: String = "Utility"
 
     fun showAppSettingsPage(context: Context) {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
         val uri = Uri.fromParts("package", context.packageName, null)
-        intent.data = uri
-        context.startActivity(intent)
+        context.startActivity(
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = uri
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+        )
     }
 
     fun getOutputMediaFile(context: Context): File {
