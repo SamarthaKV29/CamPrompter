@@ -17,15 +17,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -38,6 +30,34 @@ android {
     }
 
 }
+val keyPath = "../../../keys"
+val signingJks = "${keyPath}/main-campropter.jks"
+val passphrase = file("${keyPath}/camprompter.passphrase").readText().trim()
+
+if (file(signingJks).exists()) run {
+    android {
+        signingConfigs {
+            create("release") {
+                keyAlias = "main"
+                keyPassword = passphrase
+                storeFile = file(signingJks)
+                storePassword = passphrase
+            }
+        }
+        buildTypes {
+            getByName("release") {
+                isMinifyEnabled = false
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+                signingConfig = signingConfigs.getByName("release")
+                isDebuggable = false
+            }
+        }
+    }
+}
+
 
 dependencies {
 
