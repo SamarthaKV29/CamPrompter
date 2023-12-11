@@ -16,7 +16,7 @@ import com.rightapps.camprompter.R
 import com.rightapps.camprompter.utils.FileUtils
 import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.ViewUtils.blink
-import com.rightapps.camprompter.utils.ViewUtils.gone
+import com.rightapps.camprompter.utils.ViewUtils.hide
 import com.rightapps.camprompter.utils.ViewUtils.show
 import kotlinx.coroutines.Job
 
@@ -35,7 +35,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera_view) {
         mainCameraView = view.findViewById(R.id.mainCameraView)
         recordingIcon = view.findViewById(R.id.recordingIndicator)
 
-        recordingIcon.gone()
+        recordingIcon.hide()
         mainCameraView.apply {
             setLifecycleOwner(viewLifecycleOwner)
             mode = Mode.VIDEO
@@ -64,11 +64,11 @@ class CameraFragment : Fragment(R.layout.fragment_camera_view) {
                 override fun onVideoRecordingEnd() {
                     super.onVideoRecordingEnd()
                     recordingIcon.blink(false, job = oldJob)
-                    recordingIcon.gone()
+                    recordingIcon.hide()
                 }
             })
-            sharedGlue.isRecording.observe(viewLifecycleOwner) { startRecording ->
-                FileUtils.getOutputMediaFile(context)?.let { outputFile ->
+            sharedGlue.isRecordingVideo.observe(viewLifecycleOwner) { startRecording ->
+                FileUtils.getOutputFile(context, FileUtils.FileType.VIDEO_FILE)?.let { outputFile ->
                     if (startRecording) {
                         mainCameraView.takeVideo(outputFile)
                     } else {

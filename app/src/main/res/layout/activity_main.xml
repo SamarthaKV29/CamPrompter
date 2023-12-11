@@ -27,6 +27,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/white"
+        android:visibility="gone"
+        android:tag="@string/tag_splash_lyt"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView

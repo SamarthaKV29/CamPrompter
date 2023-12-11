@@ -1,16 +1,25 @@
 package com.rightapps.camprompter.ui
 
 import PermissionUtils
+import android.content.res.Configuration
+import android.media.MediaRecorder
 import android.os.Bundle
 import android.util.Log
 import android.widget.RelativeLayout
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.utils.KAlertDialogType
+import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.Utility
-import com.rightapps.camprompter.utils.ViewUtils.gone
+import com.rightapps.camprompter.utils.ViewUtils.hide
+import com.rightapps.camprompter.utils.ViewUtils.show
+import com.rightapps.camprompter.utils.audio.MicManager
+import com.rightapps.camprompter.utils.audio.MicManager.prepareSafely
+import com.rightapps.camprompter.utils.audio.MicManager.startSafely
+import com.rightapps.camprompter.utils.audio.MicManager.stopSafely
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -24,6 +33,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var splashLyt: RelativeLayout
     private var topDialog: KAlertDialog? = null
+    private val sharedGlue: UISharedGlue by viewModels()
+    private var recorder: MediaRecorder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.bottomBarHolder, BottomMenuFragment())
             // addToBackStack("CameraView")
         }
+        splashLyt.show()
     }
 
     override fun onStart() {
@@ -46,11 +58,27 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.Main).launch {
             delay(2000)
-            splashLyt.gone()
+            splashLyt.hide()
         }
 
-
+        sharedGlue.isRecordingAudio.observe(this) { isRecordingAudio ->
+            Log.d(TAG, "onStart: isRec: $isRecordingAudio")
+            if (isRecordingAudio) {
+                recorder = MicManager.getRecorder(applicationContext).apply {
+                    prepareSafely(applicationContext) { _, what, _ ->
+                        if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+                            stopSafely()
+                            sharedGlue.isRecordingAudio.value = false
+                        }
+                    }
+                    startSafely()
+                }
+            } else {
+                recorder?.apply { stopSafely() }
+            }
+        }
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -79,6 +107,11 @@ class MainActivity : AppCompatActivity() {
                 topDialog?.show()
             }
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        Log.d(TAG, "onConfigurationChanged: Orientation: ${newConfig.orientation}")
     }
 
 

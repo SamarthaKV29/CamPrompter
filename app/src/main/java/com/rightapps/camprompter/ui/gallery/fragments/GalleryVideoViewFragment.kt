@@ -2,13 +2,15 @@ package com.rightapps.camprompter.ui.gallery.fragments
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.util.MimeTypes
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
 import com.rightapps.camprompter.utils.UISharedGlue
@@ -30,17 +32,37 @@ class GalleryVideoViewFragment(private val uri: Uri) :
         playerView = view.findViewById(R.id.playerView)
         player = ExoPlayer.Builder(requireContext()).build()
         playerView.player = player
-
-        player.addMediaItem(MediaItem.Builder().setUri(uri).build())
-        player.prepare()
-        player.play()
-
+        val mimeType =
+            if (uri.path?.endsWith(".mp4") == true) MimeTypes.VIDEO_MP4 else MimeTypes.AUDIO_AAC
+        player.addMediaItem(
+            MediaItem.Builder()
+                .setUri(uri)
+//                .setMimeType(mimeType)
+                .build()
+        )
+        player.tryPlay()
     }
 
     override fun onStop() {
-        player.release()
         super.onStop()
+        player.tryStop()
     }
 
+    private fun ExoPlayer.tryStop() = try {
+        player.stop()
+    } catch (e: Exception) {
+        Toast.makeText(requireContext(), "Failed to stop media", Toast.LENGTH_SHORT).show()
+        Log.w(TAG, "tryPlay: Failed to stop media: ${e.localizedMessage}")
+    } finally {
+        player.release()
+    }
 
+    private fun ExoPlayer.tryPlay() = try {
+        prepare()
+        play()
+    } catch (e: Exception) {
+        Toast.makeText(requireContext(), "Failed to play media", Toast.LENGTH_SHORT).show()
+        Log.w(TAG, "tryPlay: Failed to play media: ${e.localizedMessage}")
+
+    }
 }

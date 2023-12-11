@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.rightapps.camprompter.ui.gallery.GalleryGridAdapter
+import com.rightapps.camprompter.ui.gallery.GalleryAdapter
 
 
 class EmptyRecyclerView : RecyclerView {
@@ -54,6 +54,6 @@ class EmptyRecyclerView : RecyclerView {
     }
 
     interface OnItemClickListener {
-        fun onItemClick(adapter: GalleryGridAdapter, item: GalleryGridAdapter.Video)
+        fun onItemClick(adapter: GalleryAdapter, item: GalleryAdapter.MediaFile)
     }
 }

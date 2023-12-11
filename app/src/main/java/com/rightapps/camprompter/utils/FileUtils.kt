@@ -5,6 +5,7 @@ import android.icu.text.SimpleDateFormat
 import android.media.MediaScannerConnection
 import android.media.MediaScannerConnection.OnScanCompletedListener
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
@@ -16,34 +17,68 @@ import java.util.Locale
 object FileUtils {
     private const val TAG: String = "FileUtils"
 
-    private fun getDataDir(context: Context) =
-        "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).path}/${
+    enum class FileType {
+        AUDIO_FILE,
+        VIDEO_FILE
+    }
+
+    fun getAudioRecordingsDir() =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Environment.DIRECTORY_RECORDINGS else Environment.DIRECTORY_MUSIC
+
+    private fun getMediaDirPath(context: Context, type: FileType) = when (type) {
+        FileType.VIDEO_FILE -> "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).path}/${
             context.getString(R.string.app_name)
         }"
 
-    fun rescanMedia(context: Context, scanCompletedListener: OnScanCompletedListener? = null) {
+        FileType.AUDIO_FILE -> "${
+            Environment.getExternalStoragePublicDirectory(
+                getAudioRecordingsDir()
+            ).path
+        }/${
+            context.getString(R.string.app_name)
+        }"
+    }
+
+    fun rescanMedia(
+        context: Context,
+        type: FileType,
+        scanCompletedListener: OnScanCompletedListener? = null
+    ) {
         MediaScannerConnection.scanFile(
             context,
             arrayOf(
-                getDataDir(context)
+                getMediaDirPath(context, type)
             ),
-            null, scanCompletedListener
+            arrayOf(
+                getMediaMimeType(type)
+            ), scanCompletedListener
         )
     }
 
-    fun getOutputMediaFile(context: Context): File? {
-        val mediaStorageDir = File(getDataDir(context))
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.e(TAG, "getOutputMediaFile: Failed to create dir")
-                return null
-            }
-        }
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        return File("${mediaStorageDir.path}${File.separator}VID_$timeStamp.mp4")
+    private fun getMediaMimeType(type: FileType) = when (type) {
+        FileType.VIDEO_FILE -> "video/mp4"
+        FileType.AUDIO_FILE -> "audio/aac"
     }
 
-    fun deleteDataFile(uri: Uri): Boolean = uri.path?.let {
+    private fun getMediaDir(context: Context, type: FileType): File? {
+        return File(getMediaDirPath(context, type)).apply {
+            if (!exists()) try {
+                mkdirs()
+            } catch (_: Exception) {
+                Log.d(TAG, "getMediaDir: Failed to create data dir")
+            }
+        }.takeIf { it.exists() }
+    }
+
+    fun getOutputFile(context: Context, type: FileType): File? = getMediaDir(context, type)?.let {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        when (type) {
+            FileType.VIDEO_FILE -> File("${it.path}${File.separator}VID_$timeStamp.mp4")
+            FileType.AUDIO_FILE -> File("${it.path}${File.separator}AUD_$timeStamp.aac")
+        }
+    }
+
+    fun deleteMedia(uri: Uri): Boolean = uri.path?.let {
         File(it).takeIf { file -> file.exists() }?.delete()
     } ?: false
 
@@ -56,11 +91,23 @@ object FileUtils {
         false
     }
 
-    fun getMediaDataDirCursor(context: Context) = context.contentResolver.query(
-        MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-        arrayOf(MediaStore.Video.Media.DATA, MediaStore.Video.Media.TITLE),
-        MediaStore.Video.Media.DATA + " like ? ",
-        arrayOf("%/DCIM/${context.getString(R.string.app_name)}/%"),
-        null
-    )
+    fun getMediaDataCursor(context: Context, type: FileType) = when (type) {
+        FileType.VIDEO_FILE -> context.contentResolver.query(
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+            arrayOf(MediaStore.Video.Media.DATA, MediaStore.Video.Media.TITLE),
+            MediaStore.Video.Media.DATA + " like ? ",
+            arrayOf("%/DCIM/${context.getString(R.string.app_name)}/%"),
+            null
+        )
+
+        FileType.AUDIO_FILE -> context.contentResolver.query(
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+            arrayOf(MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.TITLE),
+            MediaStore.Audio.Media.DATA + " like ? ",
+            arrayOf("%/${getAudioRecordingsDir()}/${context.getString(R.string.app_name)}/%"),
+            null
+        )
+    }
+
+
 }

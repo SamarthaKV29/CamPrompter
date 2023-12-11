@@ -10,4 +10,8 @@
     <string name="select_multiple">Select Multiple</string>
     <string name="delete">Delete</string>
     <string name="app_title">Cam Prompter</string>
+    <string name="tag_recording_indicator">Recording Indicator</string>
+    <string name="tag_splash_lyt">Splash Lyt</string>
+    <string name="audio_video">Audio/Video</string>
+    <string name="select_all">Select All</string>
 </resources>

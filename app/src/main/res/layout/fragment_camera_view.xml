@@ -29,7 +29,8 @@
             android:src="@android:drawable/ic_notification_overlay"
             app:layout_drawOnPictureSnapshot="false"
             app:layout_drawOnPreview="true"
-            app:layout_drawOnVideoSnapshot="false" />
+            app:layout_drawOnVideoSnapshot="false"
+            android:tag="@string/tag_recording_indicator"/>
     </com.otaliastudios.cameraview.CameraView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
