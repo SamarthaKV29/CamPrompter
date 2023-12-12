@@ -11,4 +11,6 @@ class UISharedGlue : ViewModel() {
     val showDeleteButton = MutableLiveData<Boolean>()
     val isRecordingAudio = MutableLiveData<Boolean>()
     val galleryViewType = MutableLiveData<FileUtils.FileType>()
+
+
 }

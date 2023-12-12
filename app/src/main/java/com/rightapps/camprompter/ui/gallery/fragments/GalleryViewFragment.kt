@@ -6,7 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.rightapps.camprompter.R
+import com.rightapps.camprompter.databinding.FragmentGalleryViewBinding
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
 import com.rightapps.camprompter.ui.gallery.GalleryAdapter
 import com.rightapps.camprompter.utils.EmptyRecyclerView
@@ -24,12 +27,18 @@ import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.Utility
 
 class GalleryViewFragment(private val type: FileUtils.FileType) :
-    Fragment(R.layout.fragment_gallery_grid) {
+    Fragment(R.layout.fragment_gallery_view) {
     companion object {
         const val TAG: String = "GalleryGridFragment"
         const val ACTION_SELECT_ALL = "ACTION_SELECT_ALL"
         const val ACTION_DELETE_SELECTION = "ACTION_DELETE_SELECTION"
     }
+
+    private var _binding: FragmentGalleryViewBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     private lateinit var galleryLoadingBar: CircularProgressIndicator
     private lateinit var galleryRV: EmptyRecyclerView
@@ -39,6 +48,14 @@ class GalleryViewFragment(private val type: FileUtils.FileType) :
     private val selectedItems = MutableLiveData<List<GalleryAdapter.MediaFile>?>()
     private val isLoading = MutableLiveData<Boolean>()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentGalleryViewBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

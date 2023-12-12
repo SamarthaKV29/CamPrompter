@@ -4,19 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<!--    Not working -->
+<!--    <include android:id="@+id/topStatusBar" layout="@layout/top_status_bar" />-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/cameraFragmentHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bottomBarHolder"
         android:layout_width="match_parent"
-        android:layout_height="128dp"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

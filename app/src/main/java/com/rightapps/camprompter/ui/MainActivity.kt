@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
+import com.rightapps.camprompter.databinding.ActivityMainBinding
 import com.rightapps.camprompter.utils.KAlertDialogType
 import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.Utility
@@ -28,14 +31,18 @@ class MainActivity : AppCompatActivity() {
         var permissionRequestCount = 0;
     }
 
-    private var topDialog: KAlertDialog? = null
+    private lateinit var binding: ActivityMainBinding
+
     private val sharedGlue: UISharedGlue by viewModels()
+    private var topDialog: KAlertDialog? = null
     private var recorder: MediaRecorder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate: ")
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         supportFragmentManager.commit {
             replace(R.id.cameraFragmentHolder, CameraFragment())
             setReorderingAllowed(true)
@@ -55,7 +62,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         sharedGlue.isRecordingAudio.observe(this) { isRecordingAudio ->
-            Log.d(TAG, "onStart: isRec: $isRecordingAudio")
             if (isRecordingAudio) {
                 recorder = MicManager.getRecorder(applicationContext).apply {
                     prepareSafely(applicationContext) { _, what, _ ->
@@ -69,9 +75,13 @@ class MainActivity : AppCompatActivity() {
             } else {
                 recorder?.apply { stopSafely() }
             }
+//            Not working
+//            binding.topStatusBar.statusBarAudioCapture.apply {
+//                isVisible = isRecordingAudio
+//                DrawableCompat.setTint(this.drawable, getColor(R.color.white))
+//            }
         }
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

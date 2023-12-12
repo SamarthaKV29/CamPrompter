@@ -17,7 +17,7 @@
     <style name="Base.Theme.CamPrompter" parent="Theme.Material3.Dark">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="windowActionBar">true</item>
+        <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
@@ -25,6 +25,13 @@
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in</item>
         <item name="android:windowExitAnimation">@anim/slide_out</item>
+    </style>
+
+    <style name="StatusBarIcons">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:tint">@color/white</item>
+        <item name="android:layout_marginHorizontal">4dp</item>
     </style>
 
 </resources>

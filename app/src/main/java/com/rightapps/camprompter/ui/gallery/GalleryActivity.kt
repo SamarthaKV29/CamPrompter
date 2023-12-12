@@ -5,11 +5,11 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.Toolbar
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
+import com.rightapps.camprompter.databinding.ActivityGalleryBinding
 import com.rightapps.camprompter.ui.gallery.fragments.GalleryViewFragment
 import com.rightapps.camprompter.utils.FileUtils
 import com.rightapps.camprompter.utils.KAlertDialogType
@@ -27,10 +27,13 @@ class GalleryActivity : AppCompatActivity() {
     }
 
     private val sharedGlue: UISharedGlue by viewModels()
+    private lateinit var binding: ActivityGalleryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_gallery)
+        binding = ActivityGalleryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         setUpTopbar()
         supportFragmentManager.commit {
             setReorderingAllowed(true)
@@ -47,7 +50,7 @@ class GalleryActivity : AppCompatActivity() {
     }
 
     private fun setUpTopbar() {
-        findViewById<Toolbar>(R.id.toolbar)?.let { toolbar ->
+        binding.topbar.toolbar.let { toolbar ->
 //            setSupportActionBar(toolbar) // This causes menu not be shown
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
