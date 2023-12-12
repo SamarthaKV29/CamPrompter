@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.util.Log
-import android.widget.RelativeLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
@@ -14,8 +13,6 @@ import com.rightapps.camprompter.R
 import com.rightapps.camprompter.utils.KAlertDialogType
 import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.Utility
-import com.rightapps.camprompter.utils.ViewUtils.hide
-import com.rightapps.camprompter.utils.ViewUtils.show
 import com.rightapps.camprompter.utils.audio.MicManager
 import com.rightapps.camprompter.utils.audio.MicManager.prepareSafely
 import com.rightapps.camprompter.utils.audio.MicManager.startSafely
@@ -31,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         var permissionRequestCount = 0;
     }
 
-    private lateinit var splashLyt: RelativeLayout
     private var topDialog: KAlertDialog? = null
     private val sharedGlue: UISharedGlue by viewModels()
     private var recorder: MediaRecorder? = null
@@ -40,14 +36,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate: ")
         setContentView(R.layout.activity_main)
-        splashLyt = findViewById(R.id.splashLyt)
         supportFragmentManager.commit {
             replace(R.id.cameraFragmentHolder, CameraFragment())
             setReorderingAllowed(true)
             replace(R.id.bottomBarHolder, BottomMenuFragment())
             // addToBackStack("CameraView")
         }
-        splashLyt.show()
     }
 
     override fun onStart() {
@@ -58,7 +52,6 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.Main).launch {
             delay(2000)
-            splashLyt.hide()
         }
 
         sharedGlue.isRecordingAudio.observe(this) { isRecordingAudio ->
