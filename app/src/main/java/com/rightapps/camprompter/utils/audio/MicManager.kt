@@ -1,6 +1,7 @@
 package com.rightapps.camprompter.utils.audio
 
 import android.content.Context
+import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.media.MediaRecorder
 import android.media.MediaRecorder.OnInfoListener
@@ -11,39 +12,36 @@ import com.rightapps.camprompter.utils.FileUtils
 object MicManager {
     const val TAG: String = "MicManager"
 
-    enum class InputType(type: Int) {
-        BuiltIn(15),
-        Bluetooth(7),
-        ExternalUsb(11)
+    enum class InputType {
+        BuiltIn,
+        Bluetooth,
+        ExternalUsb;
+
+        override fun toString(): String = this.name
     }
+
+    fun getAvailable(context: Context): Set<InputType> =
+        getAudioManager(context).let { audioManager ->
+            mutableSetOf(InputType.BuiltIn).apply {
+                audioManager.getDevices(AudioManager.GET_DEVICES_INPUTS).map { it.type }
+                    .forEach { device ->
+                        when (device) {
+                            AudioDeviceInfo.TYPE_BLE_HEADSET,
+                            AudioDeviceInfo.TYPE_BLUETOOTH_SCO ->
+                                add(InputType.Bluetooth)
+
+                            AudioDeviceInfo.TYPE_USB_DEVICE,
+                            AudioDeviceInfo.TYPE_USB_ACCESSORY,
+                            AudioDeviceInfo.TYPE_USB_HEADSET ->
+                                add(InputType.ExternalUsb)
+
+                        }
+                    }
+            }.toSet()
+        }
 
     fun getAudioManager(context: Context) =
         context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
-    fun getAvailableMics(context: Context) = getAudioManager(context).microphones
-    fun getMicListAsString(context: Context) =
-        getAudioManager(context).microphones.joinToString("|") {
-            "ID: ${it.id}, Descz: ${it.description} Type: ${it.type}"
-        }
-
-    fun getId(context: Context, type: InputType): Int =
-        getAvailableMics(context).find { it.type == type.ordinal }?.id ?: -1
-
-    fun switchMic(context: Context, type: InputType, mediaRecorder: MediaRecorder) {
-        val micId = getId(context, type)
-        getAudioManager(context).getDevices(AudioManager.GET_DEVICES_INPUTS)
-            .first { it.id == micId }?.let { device ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    Log.d(
-                        TAG, "switchMic: Audio source set ${
-                            if (mediaRecorder.setPreferredDevice(device)) "successfully" else "failed"
-                        }"
-                    )
-                } else {
-                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-                }
-            }
-    }
 
     fun getRecorder(context: Context) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         MediaRecorder(context)
@@ -51,11 +49,7 @@ object MicManager {
 
     fun MediaRecorder.prepareSafely(context: Context, onInfoListener: OnInfoListener? = null) =
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                setAudioSource(MediaRecorder.AudioSource.VOICE_PERFORMANCE)
-            } else {
-                setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION)
-            }
+            setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             setAudioEncodingBitRate(128000)
