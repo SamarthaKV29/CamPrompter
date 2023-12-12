@@ -4,21 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:clickable="true"
-        app:navigationIcon="?attr/homeAsUpIndicator">
-
-        <!--    <androidx.appcompat.widget.AppCompatImageButton-->
-        <!--        android:id="@+id/topbarMenuBtn"-->
-        <!--        android:layout_width="16dp"-->
-        <!--        android:layout_height="16dp"-->
-        <!--        android:src="@android:drawable/ic_dialog_info"-->
-        <!--        android:layout_gravity="center|end"-->
-        <!--        android:layout_marginEnd="8dp" />-->
-
-    </androidx.appcompat.widget.Toolbar>
+        app:layout_scrollEffect="compress"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="@string/app_name" />
 </com.google.android.material.appbar.AppBarLayout>

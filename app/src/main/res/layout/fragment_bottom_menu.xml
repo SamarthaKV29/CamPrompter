@@ -1,73 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
-    tools:context=".ui.BottomMenuFragment">
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:weightSum="5">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/toggleMic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            app:thumbIcon="@drawable/mic_icon"
+            app:thumbIconTint="?attr/colorOnPrimary"
+            app:thumbTint="?attr/colorPrimary"
+            app:trackDecorationTint="?attr/colorPrimaryVariant"
+            app:trackTint="@color/md_indigo_300" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="3">
+        android:layout_weight="1">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1">
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/captureAudioBtn"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/capture_audio"
+            android:backgroundTint="@color/md_red_400"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/captureBtn"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/capture"
-                android:backgroundTint="@color/md_red_400"
-                android:text=""
-                android:textOff=""
-                android:textOn="" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/captureAudioBtn"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/capture_audio"
-                android:backgroundTint="@color/md_red_400"
-                android:text=""
-                android:textOff=""
-                android:textOn="" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/previewBtn"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/gallery_icon"
-                android:backgroundTint="@color/md_deep_purple_A100"
-                android:text=""
-                android:textOff=""
-                android:textOn="" />
-        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</FrameLayout>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/captureBtn"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/capture"
+            android:backgroundTint="@color/md_red_400"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/previewBtn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/baseline_photo_library_24"
+
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/baseline_settings_24" />
+
+    </RelativeLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

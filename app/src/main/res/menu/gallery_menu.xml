@@ -4,16 +4,9 @@
 
     <item
         android:id="@+id/menuGalleryType"
-        android:icon="@drawable/tone_icon"
+        android:checkable="true"
+        android:icon="@drawable/gallery_type"
         android:title="@string/audio_video"
-        app:iconTint="@color/md_white_1000"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/menuMultiSelect"
-        android:icon="@drawable/checkbox_on_icon"
-        android:title="@string/select_multiple"
-        app:iconTint="@color/white"
         app:showAsAction="always" />
 
     <item
@@ -21,7 +14,6 @@
         android:icon="@drawable/select_all_icon"
         android:title="@string/select_all"
         android:visible="false"
-        app:iconTint="@color/white"
         app:showAsAction="ifRoom" />
 
     <item
@@ -31,12 +23,6 @@
         android:visible="false"
         app:showAsAction="ifRoom" />
 
-
-    <item
-        android:id="@+id/menuPref"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="@string/options"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/menuAppInfo"

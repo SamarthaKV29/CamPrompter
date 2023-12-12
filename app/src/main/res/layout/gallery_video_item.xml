@@ -1,24 +1,28 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_200dp"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardMaxElevation="4dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/videoThumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:scaleType="fitCenter"
-        android:background="@android:drawable/alert_dark_frame"
+        android:scaleType="centerCrop"
         android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
-    <!-- Other views (like video title, duration, etc.) -->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/isSelected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_margin="4dp"
-        android:visibility="gone"
-        android:src="@android:drawable/checkbox_off_background" />
-</FrameLayout>
+    <!--    &lt;!&ndash; Other views (like video title, duration, etc.) &ndash;&gt;-->
+    <!--    <com.google.android.material.checkbox.MaterialCheckBox-->
+    <!--        android:id="@+id/isSelected"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="end"-->
+    <!--        android:visibility="visible" />-->
+</com.google.android.material.card.MaterialCardView>

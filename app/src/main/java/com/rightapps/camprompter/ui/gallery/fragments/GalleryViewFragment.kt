@@ -1,5 +1,6 @@
 package com.rightapps.camprompter.ui.gallery.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -16,7 +17,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentGalleryViewBinding
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
@@ -24,7 +24,6 @@ import com.rightapps.camprompter.ui.gallery.GalleryAdapter
 import com.rightapps.camprompter.utils.EmptyRecyclerView
 import com.rightapps.camprompter.utils.FileUtils
 import com.rightapps.camprompter.utils.UISharedGlue
-import com.rightapps.camprompter.utils.Utility
 
 class GalleryViewFragment(private val type: FileUtils.FileType) :
     Fragment(R.layout.fragment_gallery_view) {
@@ -40,12 +39,11 @@ class GalleryViewFragment(private val type: FileUtils.FileType) :
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var galleryLoadingBar: CircularProgressIndicator
-    private lateinit var galleryRV: EmptyRecyclerView
-    private lateinit var gridAdapter: GalleryAdapter
+    private var gridAdapter: GalleryAdapter? = null
 
     private val sharedGlue: UISharedGlue by activityViewModels()
-    private val selectedItems = MutableLiveData<List<GalleryAdapter.MediaFile>?>()
+
+    //    private val selectedItems = MutableLiveData<List<GalleryAdapter.MediaFile>>()
     private val isLoading = MutableLiveData<Boolean>()
 
     override fun onCreateView(
@@ -57,12 +55,13 @@ class GalleryViewFragment(private val type: FileUtils.FileType) :
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedGlue.galleryFragmentType.value =
             GalleryActivity.Companion.GalleryFragmentType.GalleryView
-        galleryRV = view.findViewById(R.id.galleryRV)
-        galleryRV.layoutManager = when (type) {
+
+        binding.galleryRV.layoutManager = when (type) {
             FileUtils.FileType.VIDEO_FILE -> GridLayoutManager(
                 context,
                 3,
@@ -73,56 +72,51 @@ class GalleryViewFragment(private val type: FileUtils.FileType) :
             FileUtils.FileType.AUDIO_FILE -> LinearLayoutManager(context)
         }
 
-        galleryRV.setEmptyView(layoutInflater.inflate(R.layout.empty_view, null))
-
-        galleryLoadingBar = view.findViewById(R.id.galleryLoadingBar)
+        binding.galleryRV.setEmptyView(layoutInflater.inflate(R.layout.empty_view, null))
 
         isLoading.observe(viewLifecycleOwner) {
-            galleryLoadingBar.visibility = if (it) View.VISIBLE else View.GONE
+            binding.galleryLoadingBar.visibility = if (it) View.VISIBLE else View.GONE
         }
 
         isLoading.postValue(true)
 
         setFragmentResultListener(ACTION_DELETE_SELECTION) { _, _ ->
             isLoading.postValue(true)
-            gridAdapter.removeItems()
+            gridAdapter?.removeSelectedItems()
             sharedGlue.isSelectingGalleryItems.value = false
             isLoading.postValue(false)
         }
 
         setFragmentResultListener(ACTION_SELECT_ALL) { _, _ ->
-            val isAllSelected = gridAdapter.mediaData.all { it.isSelected }
-            gridAdapter.mediaData.forEachIndexed { index, mediaFile ->
-                mediaFile.isSelected = !isAllSelected
-                gridAdapter.notifySafely(index)
-            }
-            selectedItems.postValue(gridAdapter.mediaData)
+            val isAllSelected = gridAdapter?.mediaData?.all { it.isSelected } ?: false
+            Log.d(TAG, "onViewCreated: isAllSelected: $isAllSelected")
+            gridAdapter?.setSelectedAll(!isAllSelected)
+            sharedGlue.isSelectingGalleryItems.postValue(!isAllSelected)
         }
 
         loadGallery()
-
+        binding.galleryRV.setEmptyView(layoutInflater.inflate(R.layout.empty_view, null))
         // Setup Observers
         sharedGlue.isSelectingGalleryItems.observe(viewLifecycleOwner) {
-            loadGallery(it)
-        }
-        selectedItems.observe(viewLifecycleOwner) { selectedVideos ->
-            Log.d(TAG, "onViewCreated: selected: ${selectedVideos?.size}")
-            sharedGlue.showDeleteButton.value = selectedVideos?.isNotEmpty() == true
+            // Reset adapter
+            gridAdapter?.notifySafely {
+                gridAdapter?.notifyDataSetChanged()
+            }
+            sharedGlue.showDeleteButton.postValue((gridAdapter?.getSelectionCount() ?: 0) > 0)
         }
     }
 
-    private fun loadGallery(isSelecting: Boolean = false) =
+    private fun loadGallery() =
         FileUtils.rescanMedia(requireContext(), type) { _, _ ->
             requireActivity().runOnUiThread {
                 gridAdapter =
                     GalleryAdapter(
                         fetchMedia(requireContext()),
                         type,
-                        isSelecting,
-                        selectedItems,
+                        sharedGlue.isSelectingGalleryItems,
                         getItemClickListener()
                     )
-                galleryRV.adapter = gridAdapter
+                binding.galleryRV.adapter = gridAdapter
                 isLoading.postValue(false)
             }
         }
@@ -154,7 +148,7 @@ class GalleryViewFragment(private val type: FileUtils.FileType) :
                         pathUri,
                         title,
                         false,
-                        if (type == FileUtils.FileType.VIDEO_FILE) Utility.getThumbnail(pathUri.path) else null
+                        if (type == FileUtils.FileType.VIDEO_FILE) FileUtils.getThumbnail(pathUri.path) else null
                     )
                 )
             }

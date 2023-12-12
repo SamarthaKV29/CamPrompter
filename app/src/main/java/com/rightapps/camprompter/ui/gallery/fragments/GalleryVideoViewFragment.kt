@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.util.MimeTypes
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentGalleryVideoViewBinding
 import com.rightapps.camprompter.ui.gallery.GalleryActivity

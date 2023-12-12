@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -13,8 +11,8 @@ android {
         applicationId = "com.rightapps.camprompter"
         minSdk = 27
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0-alpha"
+        versionCode = 2
+        versionName = "1.1-alpha"
         base.archivesBaseName = "${applicationId}-v${versionName}"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

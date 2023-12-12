@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    Not working -->
-<!--    <include android:id="@+id/topStatusBar" layout="@layout/top_status_bar" />-->
+    <!--    Not working -->
+    <!--    <include android:id="@+id/topStatusBar" layout="@layout/top_status_bar" />-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/cameraFragmentHolder"

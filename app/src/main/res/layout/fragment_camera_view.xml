@@ -27,10 +27,10 @@
             android:layout_gravity="top|start"
             android:layout_margin="10dp"
             android:src="@android:drawable/ic_notification_overlay"
+            android:tag="@string/tag_recording_indicator"
             app:layout_drawOnPictureSnapshot="false"
             app:layout_drawOnPreview="true"
-            app:layout_drawOnVideoSnapshot="false"
-            android:tag="@string/tag_recording_indicator"/>
+            app:layout_drawOnVideoSnapshot="false" />
     </com.otaliastudios.cameraview.CameraView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
@@ -48,6 +46,14 @@ class MainActivity : AppCompatActivity() {
             setReorderingAllowed(true)
             replace(R.id.bottomBarHolder, BottomMenuFragment())
             // addToBackStack("CameraView")
+        }
+
+        Utility.registerBackPressListener(this) {
+            Utility.showSimpleAlertDialog(this,
+                message = "Are you sure you want to exit?",
+                onConfirm = {
+                    finish()
+                })
         }
     }
 
