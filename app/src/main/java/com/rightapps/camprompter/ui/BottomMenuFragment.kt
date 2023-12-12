@@ -46,7 +46,7 @@ class BottomMenuFragment : Fragment(R.layout.fragment_bottom_menu) {
         }
 
         binding.previewBtn.setOnClickListener {
-            Utility.showPreview(requireContext())
+            Utility.showGallery(requireContext())
         }
 
         sharedGlue.isRecordingVideo.observe(viewLifecycleOwner) { isRecording ->

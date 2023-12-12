@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
@@ -15,6 +13,7 @@ import com.rightapps.camprompter.utils.FileUtils
 import com.rightapps.camprompter.utils.KAlertDialogType
 import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.Utility
+import com.rightapps.camprompter.utils.ViewUtils.fixCheckStateOnIcon
 
 class GalleryActivity : AppCompatActivity() {
     companion object {
@@ -40,6 +39,10 @@ class GalleryActivity : AppCompatActivity() {
             disallowAddToBackStack()
         }
         loadGalleryView(FileUtils.FileType.VIDEO_FILE)
+
+        Utility.registerBackPressListener(this) {
+            onBackPress()
+        }
     }
 
     private fun loadGalleryView(type: FileUtils.FileType) {
@@ -47,6 +50,14 @@ class GalleryActivity : AppCompatActivity() {
             sharedGlue.galleryViewType.value = type
             replace(R.id.galleryFragmentHolder, GalleryViewFragment(type))
         }
+    }
+
+    private fun onBackPress() {
+        Log.d(TAG, "onBackPress: IsTaskRoot: $isTaskRoot")
+        if (isTaskRoot) {
+            Utility.showHome(applicationContext)
+        }
+        finish()
     }
 
     private fun setUpTopbar() {
@@ -57,6 +68,10 @@ class GalleryActivity : AppCompatActivity() {
                 setDisplayShowHomeEnabled(true)
             }
             title = getString(R.string.title_gallery)
+            toolbar.setNavigationOnClickListener {
+                onBackPress()
+            }
+            // Setup Options Menu
             toolbar.inflateMenu(R.menu.gallery_menu)
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -66,13 +81,6 @@ class GalleryActivity : AppCompatActivity() {
                         } else {
                             loadGalleryView(FileUtils.FileType.VIDEO_FILE)
                         }
-                    }
-
-                    R.id.menuMultiSelect -> {
-                        sharedGlue.isSelectingGalleryItems.value =
-                            !(sharedGlue.isSelectingGalleryItems.value ?: false)
-                        toolbar.menu.findItem(R.id.menuGalleryType).isVisible =
-                            (sharedGlue.isSelectingGalleryItems.value ?: false).not()
                     }
 
                     R.id.menuSelectAll -> {
@@ -105,57 +113,31 @@ class GalleryActivity : AppCompatActivity() {
                         Utility.showAppSettingsPage(applicationContext)
                     }
 
-                    R.id.menuPref -> {
-                        Log.d(TAG, "onCreate: Prefs clicked")
-                    }
-
                     else -> {
                         Log.d(TAG, "Unknown clicked: ${it.title}")
                     }
                 }
                 false
             }
-            toolbar.setNavigationOnClickListener {
-                onBackPressed()
-            }
+
+            toolbar.menu.findItem(R.id.menuGalleryType).fixCheckStateOnIcon()
+            toolbar.invalidateMenu()
+
             sharedGlue.isSelectingGalleryItems.observe(this) { isSelecting ->
-                toolbar.menu.findItem(R.id.menuMultiSelect).icon =
-                    (if (isSelecting) AppCompatResources.getDrawable(
-                        this,
-                        R.drawable.checkbox_off_icon
-                    ) else AppCompatResources.getDrawable(
-                        this,
-                        R.drawable.checkbox_on_icon
-                    ))?.apply {
-                        DrawableCompat.setTint(this, getColor(R.color.white))
-                    }
-                toolbar.menu.findItem(R.id.menuGalleryType).isVisible =
-                    (sharedGlue.isSelectingGalleryItems.value ?: false).not()
-                toolbar.menu.findItem(R.id.menuSelectAll).apply {
-                    isVisible = isSelecting
-                    icon = AppCompatResources.getDrawable(
-                        this@GalleryActivity,
-                        R.drawable.select_all_icon
-                    )?.apply {
-                        DrawableCompat.setTint(this, getColor(R.color.white))
-                    }
-                }
+                toolbar.menu.findItem(R.id.menuSelectAll)?.isVisible = isSelecting
+                toolbar.menu.findItem(R.id.menuGalleryType)?.isVisible = !isSelecting
+                toolbar.menu.findItem(R.id.menuSelectAll)?.isVisible = isSelecting
+
+                toolbar.invalidateMenu()
             }
             sharedGlue.showDeleteButton.observe(this) {
                 toolbar.menu.findItem(R.id.menuDeleteSelected).isVisible = it
+                toolbar.invalidateMenu()
             }
             sharedGlue.galleryViewType.observe(this) { type ->
-                toolbar.menu.findItem(R.id.menuGalleryType).apply {
-                    icon =
-                        (if (type == FileUtils.FileType.VIDEO_FILE) AppCompatResources.getDrawable(
-                            this@GalleryActivity,
-                            R.drawable.tone_icon
-                        ) else AppCompatResources.getDrawable(
-                            this@GalleryActivity,
-                            R.drawable.video_icon
-                        ))?.apply { DrawableCompat.setTint(this, getColor(R.color.white)) }
-                }
-
+                toolbar.menu.findItem(R.id.menuGalleryType)?.isChecked =
+                    (type != FileUtils.FileType.VIDEO_FILE)
+                toolbar.invalidateMenu()
             }
             sharedGlue.galleryFragmentType.observe(this) {
                 when (it) {

@@ -1,22 +1,8 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.CamPrompter" parent="@style/Base.Theme.CamPrompter">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/md_blue_A400</item>
-        <item name="colorPrimaryVariant">@color/md_blue_A700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-    </style>
-    <!-- Base application theme. -->
-    <style name="Base.Theme.CamPrompter" parent="Theme.Material3.Dark">
+    <style name="Base.Theme.CamPrompter" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
@@ -32,6 +18,22 @@
         <item name="android:layout_height">24dp</item>
         <item name="android:tint">@color/white</item>
         <item name="android:layout_marginHorizontal">4dp</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="Theme.CamPrompter" parent="Base.Theme.CamPrompter">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/md_light_green_400</item>
+        <item name="colorPrimaryVariant">@color/md_light_green_700</item>
+        <item name="colorOnPrimary">@color/md_green_900</item>
+        <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
     </style>
 
 </resources>

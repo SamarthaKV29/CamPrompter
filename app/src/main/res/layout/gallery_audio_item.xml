@@ -1,34 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_50dp"
-    android:layout_gravity="center"
-    android:weightSum="7">
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="0dp"
+    app:cardMaxElevation="4dp">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="0dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical"
-        android:background="@drawable/tone_icon"
-        android:scaleType="center"
-        android:layout_weight="1"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50dp"
+        android:layout_gravity="center"
+        android:weightSum="7">
 
-    <TextView
-        android:id="@+id/trackTitle"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:text="20210609_1432AUD.aac"
-        android:gravity="center_vertical"
-        android:layout_weight="5"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-    <!-- Other views (like video title, duration, etc.) -->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/isSelected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
-        android:layout_margin="4dp"
-        android:src="@android:drawable/checkbox_off_background"
-        android:visibility="visible"
-        android:layout_weight="1"/>
-</androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/baseline_music_note_24"
+                android:backgroundTint="?attr/colorOnBackground"
+                android:scaleType="center" />
+        </RelativeLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/trackTitle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center_vertical"
+            android:text="20210609_1432AUD.aac" />
+
+        <!--        &lt;!&ndash; Other views (like video title, duration, etc.) &ndash;&gt;-->
+        <!--        <com.google.android.material.checkbox.MaterialCheckBox-->
+        <!--            android:id="@+id/isSelected"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:visibility="visible" />-->
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.card.MaterialCardView>

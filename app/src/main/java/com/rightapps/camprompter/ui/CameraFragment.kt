@@ -54,6 +54,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera_view) {
             mode = Mode.VIDEO
             mapGesture(Gesture.PINCH, GestureAction.ZOOM)
             mapGesture(Gesture.TAP, GestureAction.AUTO_FOCUS)
+
             setPreviewStreamSize { sizes ->
                 sizes.forEach { size -> Log.d(TAG, "onViewCreated: PreviewSize: $size") }
                 sizes.filter {

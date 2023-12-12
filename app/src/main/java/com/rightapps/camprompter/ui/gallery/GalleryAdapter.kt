@@ -1,6 +1,5 @@
 package com.rightapps.camprompter.ui.gallery
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -9,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.textview.MaterialTextView
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.utils.EmptyRecyclerView
 import com.rightapps.camprompter.utils.FileUtils
@@ -25,59 +24,95 @@ import kotlinx.coroutines.launch
 class GalleryAdapter(
     mediaFiles: List<MediaFile>,
     private val galleryType: FileUtils.FileType,
-    private val isSelecting: Boolean,
-    private val selectedItems: MutableLiveData<List<MediaFile>?>,
+    private val isSelectingItems: MutableLiveData<Boolean>,
     private val onItemClickListener: EmptyRecyclerView.OnItemClickListener? = null
 ) :
     RecyclerView.Adapter<GalleryAdapter.MediaViewHolder>() {
 
     companion object {
         const val TAG: String = "GalleryAdapter"
+        const val NOTIFY_QUICK = 25
+        const val NOTIFY_SLOW = 125
+
     }
 
     private val galleryGridAdapter = this
     val mediaData = mediaFiles.toMutableList()
 
-    inner class MediaViewHolder(itemView: View) : ViewHolder(itemView) {
-        val title: TextView? = itemView.findViewById(R.id.trackTitle)
-        val videoThumbnail: ImageView? = itemView.findViewById(R.id.videoThumbnail)
-        val mediaIsSelected: ImageView = itemView.findViewById(R.id.isSelected)
-        // Other views
+    override fun getItemCount() = mediaData.size
+    fun getSelectionCount(): Int = mediaData.filter { it.isSelected }.size
 
-        fun getContext(): Context = itemView.context
+    private fun getMediaIndex(item: MediaFile) = mediaData.indexOf(item)
 
-        fun bind(item: MediaFile, listener: EmptyRecyclerView.OnItemClickListener? = null) {
-            if (isSelecting) {
-                itemView.setOnClickListener {
-                    val idx = getMediaIndex(item)
-                    if (idx >= 0) {
-                        mediaData[idx].isSelected =
-                            mediaData[idx].isSelected.not()
-                        selectedItems.postValue(mediaData.filter { it.isSelected })
-                        notifySafely(idx)
-                    }
-                }
+    private fun removeItem(item: MediaFile) {
+        val indx = getMediaIndex(item)
+        if (indx >= 0) {
+            mediaData.removeAt(indx)
+            notifySafely { notifyItemRemoved(indx) }
+        }
+    }
+
+    fun removeSelectedItems() {
+        mediaData.filter { it.isSelected }.forEach { mediaFile ->
+            if (FileUtils.deleteMedia(mediaFile.uri)) {
+                Log.d(TAG, "removeItems: Delete ${mediaFile.title} success")
+                removeItem(mediaFile)
             } else {
-                mediaData.filter { it.isSelected }.forEachIndexed { idx, video ->
-                    video.isSelected = false
-                    notifySafely(idx)
-                    selectedItems.postValue(null)
-                }
-                listener?.let {
-                    itemView.setOnClickListener { _ ->
-                        it.onItemClick(galleryGridAdapter, item)
-                    }
-                }
+                Log.d(TAG, "removeItems: Delete ${mediaFile.title} failed")
             }
         }
     }
 
-    fun getMediaIndex(item: MediaFile) = mediaData.indexOf(item)
 
-    fun notifySafely(idx: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(150)
-            notifyItemChanged(idx)
+    fun setSelected(mediaFile: MediaFile, selected: Boolean) {
+        val indx = getMediaIndex(mediaFile)
+        if (indx >= 0) {
+            mediaData[indx].isSelected = selected
+            notifySafely {
+                Log.d(TAG, "setSelected: Notify item changed")
+                notifyItemChanged(indx)
+            }
+        }
+    }
+
+    fun setSelectedAll(selected: Boolean) = mediaData.forEach { setSelected(it, selected) }
+
+    inner class MediaViewHolder(itemView: View) : ViewHolder(itemView) {
+        val card: MaterialCardView = itemView.findViewById(R.id.card)
+        val title: MaterialTextView? =
+            itemView.findViewById(R.id.trackTitle) // Optional (?) because
+        val videoThumbnail: ImageView? =
+            itemView.findViewById(R.id.videoThumbnail) // depends on file type
+//        val mediaIsSelected: MaterialCheckBox = itemView.findViewById(R.id.isSelected)
+        // Other views
+
+        fun getContext(): Context = itemView.context
+
+        fun bind(
+            item: MediaFile,
+            isSelecting: Boolean,
+            listener: EmptyRecyclerView.OnItemClickListener? = null
+        ) {
+            if (isSelecting) {
+                itemView.setOnClickListener {
+                    Log.d(TAG, "bind: Short click")
+                    setSelected(item, !item.isSelected)
+
+                    val doneSelecting = mediaData.none { it.isSelected }
+                    isSelectingItems.postValue(!doneSelecting)
+                }
+                itemView.setOnLongClickListener(null)
+            } else {
+                itemView.setOnLongClickListener {
+                    Log.d(TAG, "bind: Long click")
+                    setSelected(item, true)
+                    isSelectingItems.postValue(true)
+                    true
+                }
+                itemView.setOnClickListener {
+                    listener?.onItemClick(galleryGridAdapter, item)
+                }
+            }
         }
     }
 
@@ -94,49 +129,35 @@ class GalleryAdapter(
     }
 
     override fun onBindViewHolder(holder: MediaViewHolder, position: Int) {
-//        Log.d(TAG, "onBindViewHolder: ${video.uri.path}")
-        mediaData[position].let { video ->
-            // Load video thumbnail into videoThumbnail view
-            video.thumbnail?.let {
+        mediaData[position].let { mediaFile ->
+//        Log.d(TAG, "onBindViewHolder: ${mediaFile.uri.path}")
+            // Load mediaFile thumbnail into videoThumbnail view
+            mediaFile.thumbnail?.let {
                 holder.videoThumbnail?.setImageBitmap(it)
             }
-            video.title.let {
+            mediaFile.title.let {
                 holder.title?.text = it
             }
             // Set other views
-            if (isSelecting) {
-                holder.mediaIsSelected.visibility = View.VISIBLE
-                holder.mediaIsSelected.setImageDrawable(
-                    if (video.isSelected)
-                        AppCompatResources.getDrawable(
-                            holder.getContext(),
-                            android.R.drawable.checkbox_on_background
-                        )
-                    else
-                        AppCompatResources.getDrawable(
-                            holder.getContext(),
-                            android.R.drawable.checkbox_off_background
-                        )
-                )
-            } else holder.mediaIsSelected.visibility = View.GONE
+            val isSelecting = getSelectionCount() > 0
+            holder.card.isChecked = isSelecting && mediaFile.isSelected
+
+            Log.d(
+                TAG,
+                "onBindViewHolder: isSelecting: $isSelecting, card.isChecked: ${holder.card.isChecked}"
+            )
 
             // Bind Item click listener
-            holder.bind(video, onItemClickListener)
+            holder.bind(mediaFile, isSelecting, onItemClickListener)
         }
+
     }
 
-    override fun getItemCount() = mediaData.size
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun removeItems() {
-        selectedItems.value?.forEach { mediaFile ->
-            if (FileUtils.deleteMedia(mediaFile.uri)) {
-                Log.d(TAG, "removeItems: Delete ${mediaFile.title} success")
-            } else {
-                Log.d(TAG, "removeItems: Delete ${mediaFile.title} failed")
-            }
+    internal fun notifySafely(delay: Int = NOTIFY_SLOW, notify: () -> Unit) {
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(150)
+            notify()
         }
-        selectedItems.value = listOf()
     }
 
     data class MediaFile(

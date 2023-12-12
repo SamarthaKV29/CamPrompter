@@ -1,7 +1,9 @@
 package com.rightapps.camprompter.utils
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.icu.text.SimpleDateFormat
+import android.media.MediaMetadataRetriever
 import android.media.MediaScannerConnection
 import android.media.MediaScannerConnection.OnScanCompletedListener
 import android.net.Uri
@@ -10,6 +12,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import com.rightapps.camprompter.R
+import com.rightapps.camprompter.ui.gallery.GalleryActivity
 import java.io.File
 import java.util.Date
 import java.util.Locale
@@ -109,5 +112,17 @@ object FileUtils {
         )
     }
 
+    fun getThumbnail(path: String?): Bitmap? = try {
+        path?.let {
+            val retriever = MediaMetadataRetriever()
+            retriever.setDataSource(it)
+            val frame = retriever.frameAtTime
+            retriever.release()
+            frame
+        }
+    } catch (e: Exception) {
+        Log.w(GalleryActivity.TAG, "getThumbnail: Failed to get thumb: ${e.localizedMessage}")
+        null
+    }
 
 }
