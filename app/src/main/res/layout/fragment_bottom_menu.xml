@@ -1,32 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="horizontal"
-    android:weightSum="5">
+    android:weightSum="4">
 
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:gravity="center">-->
+
+    <!--        <com.google.android.material.materialswitch.MaterialSwitch-->
+    <!--            android:id="@+id/toggleMic"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:checked="true"-->
+    <!--            android:scaleX="1.2"-->
+    <!--            android:scaleY="1.2"-->
+    <!--            app:thumbIcon="@drawable/mic_icon"-->
+    <!--            app:thumbIconTint="?attr/colorOnPrimary"-->
+    <!--            app:thumbTint="?attr/colorPrimary"-->
+    <!--            app:trackDecorationTint="?attr/colorPrimaryVariant"-->
+    <!--            app:trackTint="@color/md_indigo_300" />-->
+
+    <!--    </RelativeLayout>-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/toggleMic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            app:thumbIcon="@drawable/mic_icon"
-            app:thumbIconTint="?attr/colorOnPrimary"
-            app:thumbTint="?attr/colorPrimary"
-            app:trackDecorationTint="?attr/colorPrimaryVariant"
-            app:trackTint="@color/md_indigo_300" />
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/previewBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/baseline_photo_library_24"
+            android:contentDescription="@string/cd_gallery"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -42,6 +58,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/capture_audio"
             android:backgroundTint="@color/md_red_400"
+            android:contentDescription="@string/cd_recording"
             android:text=""
             android:textOff=""
             android:textOn="" />
@@ -61,6 +78,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/capture"
             android:backgroundTint="@color/md_red_400"
+            android:contentDescription="@string/cd_take_video"
             android:text=""
             android:textOff=""
             android:textOn="" />
@@ -73,28 +91,12 @@
         android:layout_weight="1">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/previewBtn"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:id="@+id/settingsBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/baseline_photo_library_24"
-
-            android:text=""
-            android:textOff=""
-            android:textOn="" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="1">
-
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/baseline_settings_24" />
+            android:background="@drawable/baseline_settings_24"
+            android:contentDescription="@string/cd_open_app_settings" />
 
     </RelativeLayout>
 

@@ -18,10 +18,6 @@ import com.rightapps.camprompter.utils.audio.MicManager
 import com.rightapps.camprompter.utils.audio.MicManager.prepareSafely
 import com.rightapps.camprompter.utils.audio.MicManager.startSafely
 import com.rightapps.camprompter.utils.audio.MicManager.stopSafely
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -59,7 +55,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart: $permissionRequestCount")
         PermissionUtils.checkPermissions(this)
         permissionRequestCount += 1
 

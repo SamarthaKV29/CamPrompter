@@ -14,4 +14,22 @@
     <string name="tag_splash_lyt">Splash Lyt</string>
     <string name="audio_video">Audio/Video</string>
     <string name="select_all">Select All</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="cd_take_video">Take video</string>
+    <string name="cd_gallery">Open Gallery</string>
+    <string name="cd_recording">Take voice recording</string>
+    <string name="cd_open_app_settings">Open app settings</string>
 </resources>

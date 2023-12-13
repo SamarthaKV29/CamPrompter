@@ -1,6 +1,7 @@
 package com.rightapps.camprompter.ui
 
 
+import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.util.Log
@@ -10,17 +11,24 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.otaliastudios.cameraview.CameraListener
-import com.otaliastudios.cameraview.controls.Mode
 import com.otaliastudios.cameraview.gesture.Gesture
 import com.otaliastudios.cameraview.gesture.GestureAction
+import com.otaliastudios.cameraview.size.AspectRatio
+import com.otaliastudios.cameraview.size.SizeSelector
+import com.otaliastudios.cameraview.size.SizeSelectors
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentCameraViewBinding
 import com.rightapps.camprompter.utils.FileUtils
+import com.rightapps.camprompter.utils.PrefUtils
 import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.ViewUtils.blink
 import com.rightapps.camprompter.utils.ViewUtils.hide
 import com.rightapps.camprompter.utils.ViewUtils.show
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class CameraFragment : Fragment(R.layout.fragment_camera_view) {
@@ -51,22 +59,27 @@ class CameraFragment : Fragment(R.layout.fragment_camera_view) {
         binding.recordingIndicator.hide()
         binding.mainCameraView.apply {
             setLifecycleOwner(viewLifecycleOwner)
-            mode = Mode.VIDEO
             mapGesture(Gesture.PINCH, GestureAction.ZOOM)
             mapGesture(Gesture.TAP, GestureAction.AUTO_FOCUS)
 
-            setPreviewStreamSize { sizes ->
-                sizes.forEach { size -> Log.d(TAG, "onViewCreated: PreviewSize: $size") }
-                sizes.filter {
-                    it.width >= 720
-                }
+            val previewSizes = getPreviewSizes(requireContext())
+            setPreviewStreamSize(previewSizes)
+
+            Log.d(TAG, "onViewCreated: is 4K pref: ${PrefUtils.is4KPreferred(context)}")
+//            val pictureSizes = getPictureSizes(requireContext())
+            setPictureSize { videoSizes ->
+                Log.d(TAG, "onViewCreated: $videoSizes")
+                videoSizes.filter { it.height == 2560 }
             }
-            setPictureSize { sizes ->
-                sizes.forEach { size -> Log.d(TAG, "onViewCreated: PictureSize: $size") }
-                sizes.filter {
-                    it.width >= 1920
-                }
+            setVideoSize { videoSizes ->
+                videoSizes.filter { it.height == 2560 }
             }
+
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(1000)
+                Log.d(TAG, "onViewCreated: Video Size: ${binding.mainCameraView.videoSize}")
+            }
+
             addCameraListener(object : CameraListener() {
                 private var oldJob: Job? = null
 
@@ -100,6 +113,43 @@ class CameraFragment : Fragment(R.layout.fragment_camera_view) {
             }
         }
     }
+
+
+    private fun getPreviewSizes(context: Context): SizeSelector = SizeSelectors.or(
+        SizeSelectors.and(
+            SizeSelectors.or(
+                SizeSelectors.aspectRatio(AspectRatio.of(1, 1), 100F),
+                SizeSelectors.aspectRatio(AspectRatio.of(4, 5), 100F),
+                SizeSelectors.aspectRatio(AspectRatio.of(9, 16), 100F),
+            ),
+            SizeSelectors.minHeight(720)
+        ),
+        SizeSelectors.minHeight(720),
+        if (PrefUtils.is4KPreferred(context)) SizeSelectors.biggest() else SizeSelectors.minHeight(
+            1080
+        )
+    )
+
+    private fun getPictureSizes(context: Context): SizeSelector = SizeSelectors.or(
+        SizeSelectors.and(
+            SizeSelectors.or(
+                SizeSelectors.aspectRatio(AspectRatio.of(1, 1), 100F),
+                SizeSelectors.aspectRatio(AspectRatio.of(4, 5), 100F),
+                SizeSelectors.aspectRatio(AspectRatio.of(9, 16), 100F),
+            ),
+            if (PrefUtils.is4KPreferred(context))
+                SizeSelectors.biggest()
+            else SizeSelectors.or(
+                SizeSelectors.minHeight(1920),
+                SizeSelectors.minHeight(1080),
+            )
+        ),
+        if (PrefUtils.is4KPreferred(context)) SizeSelectors.biggest()
+        else SizeSelectors.or(
+            SizeSelectors.minHeight(1920),
+            SizeSelectors.minHeight(1080),
+        )
+    )
 
 
 }

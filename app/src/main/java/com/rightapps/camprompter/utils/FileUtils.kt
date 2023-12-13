@@ -28,6 +28,13 @@ object FileUtils {
     fun getAudioRecordingsDir() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Environment.DIRECTORY_RECORDINGS else Environment.DIRECTORY_MUSIC
 
+    /**
+     * Get media path for project
+     *
+     * @param context
+     * @param type
+     * @return String
+     */
     private fun getMediaDirPath(context: Context, type: FileType) = when (type) {
         FileType.VIDEO_FILE -> "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).path}/${
             context.getString(R.string.app_name)
@@ -82,7 +89,10 @@ object FileUtils {
     }
 
     fun deleteMedia(uri: Uri): Boolean = uri.path?.let {
-        File(it).takeIf { file -> file.exists() }?.delete()
+        File(it).takeIf { file -> file.exists() }?.delete() ?: run {
+            Log.d(TAG, "deleteMedia: File ${File(it).name} doesn't exist!")
+            true
+        }
     } ?: false
 
     fun removeMedia(context: Context, uri: Uri): Boolean = try {

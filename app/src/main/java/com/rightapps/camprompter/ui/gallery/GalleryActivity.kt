@@ -21,7 +21,7 @@ class GalleryActivity : AppCompatActivity() {
 
         enum class GalleryFragmentType(value: Int) {
             GalleryView(0),
-            GalleryVideoView(0)
+            GalleryVideoView(1)
         }
     }
 

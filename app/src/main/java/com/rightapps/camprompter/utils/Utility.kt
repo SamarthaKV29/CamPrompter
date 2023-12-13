@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.ui.MainActivity
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
+import com.rightapps.camprompter.ui.settings.SettingsActivity
 
 
 object Utility {
@@ -25,25 +26,20 @@ object Utility {
         )
     }
 
-    fun showGallery(context: Context) {
-        context.startActivity(
-            Intent(context, GalleryActivity::class.java).addFlags(
-                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or
-                        Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-            )
-        )
-    }
+    fun showGallery(context: Context) = launchActivity(context, GalleryActivity::class.java)
 
-    fun showHome(context: Context) {
-        context.startActivity(
-            Intent(context, MainActivity::class.java).addFlags(
-                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or
-                        Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-            )
+    fun showHome(context: Context) = launchActivity(context, MainActivity::class.java)
+
+    fun showSettings(context: Context) =
+        launchActivity(context, SettingsActivity::class.java)
+
+    private fun launchActivity(context: Context, activity: Class<*>) = context.startActivity(
+        Intent(context, activity).addFlags(
+            Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or
+                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
         )
-    }
+    )
 
     fun showSimpleAlertDialog(
         context: Context,
