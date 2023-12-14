@@ -2,7 +2,6 @@ package com.rightapps.camprompter.utils
 
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Point
 import android.util.AttributeSet
 import android.util.Log
@@ -13,7 +12,6 @@ import android.widget.RelativeLayout
 import androidx.core.graphics.minus
 import androidx.core.view.isVisible
 import com.rightapps.camprompter.R
-import kotlin.math.abs
 
 
 class AnimatingRelativeLayout : RelativeLayout {
@@ -48,10 +46,6 @@ class AnimatingRelativeLayout : RelativeLayout {
     private fun initAnimations() {
         inAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in)
         outAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_out)
-    }
-
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
     }
 
     fun show() {
@@ -114,9 +108,9 @@ class AnimatingRelativeLayout : RelativeLayout {
                     TAG,
                     "onTouchEvent: Action: MOVE, old: $oldTouch, new: $newTouch, delta: $delta"
                 )
-                if (delta.y in (initialH / 3)..(initialH / 2)) {
+                if (delta.y in (initialH / 4)..(initialH / 3)) {
                     translationY = delta.y.toFloat()
-                }
+                } else hide()
 
                 true
             }

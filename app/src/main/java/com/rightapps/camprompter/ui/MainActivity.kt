@@ -7,9 +7,11 @@ import android.media.MediaRecorder
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
@@ -129,6 +131,15 @@ class MainActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         Log.d(TAG, "onConfigurationChanged: Orientation: ${newConfig.orientation}")
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (binding.bottomDrawer.isVisible) {
+            binding.bottomDrawer.hide()
+            return true
+        }
+
+        return super.dispatchTouchEvent(ev)
     }
 
 

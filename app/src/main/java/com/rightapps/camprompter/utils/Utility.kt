@@ -6,7 +6,6 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
@@ -36,10 +35,10 @@ object Utility {
 
     fun showCamSettings(activity: MainActivity) {
         val animatingRelativeLayout = activity.binding.bottomDrawer
-        if (animatingRelativeLayout.isVisible) animatingRelativeLayout.hide() else animatingRelativeLayout.show()
         activity.supportFragmentManager.commit {
             replace(R.id.bottomDrawerFragmentHolder, CameraSettingsFragment())
         }
+        animatingRelativeLayout.show()
     }
 
     fun showAppSettings(context: Context) = launchActivity(context, SettingsActivity::class.java)
