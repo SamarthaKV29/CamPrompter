@@ -6,6 +6,7 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.ui.MainActivity
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
@@ -30,8 +31,12 @@ object Utility {
 
     fun showHome(context: Context) = launchActivity(context, MainActivity::class.java)
 
-    fun showSettings(context: Context) =
-        launchActivity(context, SettingsActivity::class.java)
+    fun showCamSettings(activity: MainActivity) {
+        val animatingRelativeLayout = activity.binding.bottomDrawer
+        if (animatingRelativeLayout.isVisible) animatingRelativeLayout.hide() else animatingRelativeLayout.show()
+    }
+
+    fun showAppSettings(context: Context) = launchActivity(context, SettingsActivity::class.java)
 
     private fun launchActivity(context: Context, activity: Class<*>) = context.startActivity(
         Intent(context, activity).addFlags(

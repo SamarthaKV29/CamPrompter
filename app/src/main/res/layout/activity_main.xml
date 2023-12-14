@@ -8,7 +8,7 @@
     <!--    <include android:id="@+id/topStatusBar" layout="@layout/top_status_bar" />-->
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/cameraFragmentHolder"
+        android:id="@+id/mainFragmentHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="80dp"
@@ -20,5 +20,33 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!--        style="@style/DialogAnimation"-->
+    <com.rightapps.camprompter.utils.AnimatingRelativeLayout
+        android:id="@+id/bottomDrawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_draw_bg"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/dragHandle"
+            android:layout_width="36dp"
+            android:layout_height="24dp"
+            android:layout_alignParentTop="true"
+            app:tint="@color/md_blue_grey_500"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/baseline_drag_handle_24" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/bottomDrawerFragmentHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+    </com.rightapps.camprompter.utils.AnimatingRelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

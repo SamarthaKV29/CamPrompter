@@ -1,6 +1,5 @@
 package com.rightapps.camprompter.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentBottomMenuBinding
-import com.rightapps.camprompter.ui.gallery.GalleryActivity
 import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.Utility
 
@@ -52,7 +50,7 @@ class BottomMenuFragment : Fragment(R.layout.fragment_bottom_menu) {
         }
 
         binding.settingsBtn.setOnClickListener {
-            Utility.showSettings(requireContext())
+            Utility.showCamSettings(requireActivity() as MainActivity)
         }
 
         sharedGlue.isRecordingVideo.observe(viewLifecycleOwner) { isRecording ->

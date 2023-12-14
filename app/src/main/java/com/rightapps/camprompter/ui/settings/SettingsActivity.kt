@@ -1,11 +1,8 @@
 package com.rightapps.camprompter.ui.settings
 
 import android.os.Bundle
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
-import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.ActivitySettingsScreenBinding
 
 class SettingsActivity : AppCompatActivity() {
