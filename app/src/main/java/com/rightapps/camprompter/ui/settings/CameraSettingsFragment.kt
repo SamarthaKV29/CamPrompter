@@ -10,6 +10,7 @@ import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentCameraSettingsBinding
 import com.rightapps.camprompter.utils.PrefUtils
 import com.rightapps.camprompter.utils.UISharedGlue
+import com.rightapps.camprompter.utils.audio.MicManager
 import com.rightapps.camprompter.utils.views.CameraSettingsItemView
 
 class CameraSettingsFragment : Fragment() {
@@ -43,12 +44,16 @@ class CameraSettingsFragment : Fragment() {
                 options = PrefUtils.VideoResolution.values()
             ).getRoot()
         )
+        val mics = MicManager.getAvailable(requireContext()).toTypedArray()
+        if (mics.size == 1) {
+            PrefUtils.setSelected(requireContext(), PrefUtils.InputType.key, mics[0].ordinal)
+        }
         binding.parentLL.addView(
             CameraSettingsItemView(
                 requireContext(),
                 title = getString(R.string.settings_title_microphone),
                 key = PrefUtils.InputType.key,
-                options = PrefUtils.InputType.values()
+                options = mics
             ).getRoot()
         )
 

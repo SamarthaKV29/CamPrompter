@@ -8,8 +8,8 @@ import com.rightapps.camprompter.R
 object PrefUtils {
     private const val KEY_USB_MIC = "prefer_usb_mic"
     private const val KEY_4K = "prefer_qhd"
-    const val KEY_SELECTED_MIC = "selected_mic"
-    const val KEY_SELECTED_RES = "selected_res"
+    private const val KEY_SELECTED_MIC = "selected_mic"
+    private const val KEY_SELECTED_RES = "selected_res"
 
     interface SettingOption<E> where E : Enum<E> {
         val text: String
