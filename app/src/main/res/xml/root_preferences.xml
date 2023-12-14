@@ -11,7 +11,7 @@
             android:defaultValue="false"
             android:key="prefer_usb_mic"
             android:title="Prefer USB Mic"
-            app:icon="@drawable/usb_mic_icon"
+            app:icon="@drawable/baseline_mic_external_on_64"
             app:summary="Always use external USB mic when available" />
     </PreferenceCategory>
 
@@ -23,7 +23,7 @@
             android:defaultValue="false"
             android:key="prefer_qhd"
             android:title="Prefer 4K"
-            app:icon="@drawable/usb_mic_icon"
+            app:icon="@drawable/baseline_4k_64"
             app:summary="Always use 4K/QHD when available" />
     </PreferenceCategory>
 

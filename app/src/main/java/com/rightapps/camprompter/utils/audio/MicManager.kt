@@ -8,17 +8,10 @@ import android.media.MediaRecorder.OnInfoListener
 import android.os.Build
 import android.util.Log
 import com.rightapps.camprompter.utils.FileUtils
+import com.rightapps.camprompter.utils.PrefUtils.InputType
 
 object MicManager {
     const val TAG: String = "MicManager"
-
-    enum class InputType {
-        BuiltIn,
-        Bluetooth,
-        ExternalUsb;
-
-        override fun toString(): String = this.name
-    }
 
     fun getAvailable(context: Context): Set<InputType> =
         getAudioManager(context).let { audioManager ->

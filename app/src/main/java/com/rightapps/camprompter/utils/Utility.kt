@@ -7,9 +7,12 @@ import android.provider.Settings
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
+import com.rightapps.camprompter.R
 import com.rightapps.camprompter.ui.MainActivity
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
+import com.rightapps.camprompter.ui.settings.CameraSettingsFragment
 import com.rightapps.camprompter.ui.settings.SettingsActivity
 
 
@@ -34,6 +37,9 @@ object Utility {
     fun showCamSettings(activity: MainActivity) {
         val animatingRelativeLayout = activity.binding.bottomDrawer
         if (animatingRelativeLayout.isVisible) animatingRelativeLayout.hide() else animatingRelativeLayout.show()
+        activity.supportFragmentManager.commit {
+            replace(R.id.bottomDrawerFragmentHolder, CameraSettingsFragment())
+        }
     }
 
     fun showAppSettings(context: Context) = launchActivity(context, SettingsActivity::class.java)
