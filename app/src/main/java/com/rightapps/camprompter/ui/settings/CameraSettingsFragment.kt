@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentCameraSettingsBinding
 import com.rightapps.camprompter.utils.PrefUtils
 import com.rightapps.camprompter.utils.UISharedGlue
@@ -37,7 +38,7 @@ class CameraSettingsFragment : Fragment() {
         binding.parentLL.addView(
             CameraSettingsItemView(
                 requireContext(),
-                title = "Resolution",
+                title = getString(R.string.settings_title_resolution),
                 key = PrefUtils.VideoResolution.key,
                 options = PrefUtils.VideoResolution.values()
             ).getRoot()
@@ -45,7 +46,7 @@ class CameraSettingsFragment : Fragment() {
         binding.parentLL.addView(
             CameraSettingsItemView(
                 requireContext(),
-                title = "Microphone",
+                title = getString(R.string.settings_title_microphone),
                 key = PrefUtils.InputType.key,
                 options = PrefUtils.InputType.values()
             ).getRoot()

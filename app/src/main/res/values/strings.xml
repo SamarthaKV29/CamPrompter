@@ -32,4 +32,6 @@
     <string name="cd_gallery">Open Gallery</string>
     <string name="cd_recording">Take voice recording</string>
     <string name="cd_open_app_settings">Open app settings</string>
+    <string name="settings_title_resolution">Resolution</string>
+    <string name="settings_title_microphone">Microphone</string>
 </resources>
