@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textview.MaterialTextView
 import com.rightapps.camprompter.R
-import com.rightapps.camprompter.utils.EmptyRecyclerView
+import com.rightapps.camprompter.utils.views.EmptyRecyclerView
 import com.rightapps.camprompter.utils.FileUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

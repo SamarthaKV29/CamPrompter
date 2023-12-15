@@ -5,42 +5,35 @@ import android.app.ActionBar.LayoutParams
 import android.content.res.Configuration
 import android.media.MediaRecorder
 import android.os.Build
-import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
+import android.view.LayoutInflater
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.ActivityMainBinding
-import com.rightapps.camprompter.ui.settings.SettingsFragment
-import com.rightapps.camprompter.utils.KAlertDialogType
-import com.rightapps.camprompter.utils.UISharedGlue
+import com.rightapps.camprompter.ui.settings.CameraSettingsFragment
 import com.rightapps.camprompter.utils.Utility
 import com.rightapps.camprompter.utils.audio.MicManager
 import com.rightapps.camprompter.utils.audio.MicManager.prepareSafely
 import com.rightapps.camprompter.utils.audio.MicManager.startSafely
 import com.rightapps.camprompter.utils.audio.MicManager.stopSafely
+import com.rightapps.camprompter.utils.views.BoundActivity
+import com.rightapps.camprompter.utils.views.KAlertDialogType
+import com.rightapps.camprompter.utils.views.UISharedGlue
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BoundActivity<ActivityMainBinding>() {
     companion object {
         const val TAG: String = "MainActivity"
-        var permissionRequestCount = 0;
+        var permissionRequestCount = 0
     }
-
-    lateinit var binding: ActivityMainBinding
 
     private val sharedGlue: UISharedGlue by viewModels()
     private var topDialog: KAlertDialog? = null
     private var recorder: MediaRecorder? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate: ")
-        binding = ActivityMainBinding.inflate(layoutInflater)
+    override fun init() {
         setContentView(binding.root)
 
         supportFragmentManager.commit {
@@ -58,6 +51,14 @@ class MainActivity : AppCompatActivity() {
                 })
         }
 
+        setupBottomDrawer()
+    }
+
+    override fun setupViewBinding(inflater: LayoutInflater): ActivityMainBinding {
+        return ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    private fun setupBottomDrawer() {
         // Cannot be done via xml
         binding.bottomDrawer.background.alpha = 225
         binding.bottomDrawer.layoutParams =
@@ -91,12 +92,21 @@ class MainActivity : AppCompatActivity() {
             } else {
                 recorder?.apply { stopSafely() }
             }
+
+
 //            Not working
 //            binding.topStatusBar.statusBarAudioCapture.apply {
 //                isVisible = isRecordingAudio
 //                DrawableCompat.setTint(this.drawable, getColor(R.color.white))
 //            }
         }
+    }
+
+    public fun showBottomDrawer() {
+        supportFragmentManager.commit {
+            replace(R.id.bottomDrawerFragmentHolder, CameraSettingsFragment())
+        }
+        binding.bottomDrawer.show()
     }
 
     override fun onRequestPermissionsResult(
@@ -132,15 +142,5 @@ class MainActivity : AppCompatActivity() {
         super.onConfigurationChanged(newConfig)
         Log.d(TAG, "onConfigurationChanged: Orientation: ${newConfig.orientation}")
     }
-
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (binding.bottomDrawer.isVisible) {
-            binding.bottomDrawer.hide()
-            return true
-        }
-
-        return super.dispatchTouchEvent(ev)
-    }
-
 
 }

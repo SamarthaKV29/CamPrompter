@@ -3,12 +3,9 @@ package com.rightapps.camprompter.ui
 
 import android.content.Context
 import android.media.MediaScannerConnection
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.gesture.Gesture
@@ -16,14 +13,14 @@ import com.otaliastudios.cameraview.gesture.GestureAction
 import com.otaliastudios.cameraview.size.AspectRatio
 import com.otaliastudios.cameraview.size.SizeSelector
 import com.otaliastudios.cameraview.size.SizeSelectors
-import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentCameraViewBinding
 import com.rightapps.camprompter.utils.FileUtils
 import com.rightapps.camprompter.utils.PrefUtils
-import com.rightapps.camprompter.utils.UISharedGlue
-import com.rightapps.camprompter.utils.ViewUtils.blink
-import com.rightapps.camprompter.utils.ViewUtils.hide
-import com.rightapps.camprompter.utils.ViewUtils.show
+import com.rightapps.camprompter.utils.views.BoundFragment
+import com.rightapps.camprompter.utils.views.UISharedGlue
+import com.rightapps.camprompter.utils.views.ViewUtils.blink
+import com.rightapps.camprompter.utils.views.ViewUtils.hide
+import com.rightapps.camprompter.utils.views.ViewUtils.show
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,31 +28,26 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class CameraFragment : Fragment(R.layout.fragment_camera_view) {
+class CameraFragment : BoundFragment<FragmentCameraViewBinding>() {
     companion object {
         const val TAG: String = "CameraFragment"
     }
 
-    private var _binding: FragmentCameraViewBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
     private val sharedGlue: UISharedGlue by activityViewModels()
 
-    override fun onCreateView(
+    override fun setupViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentCameraViewBinding.inflate(inflater, container, false)
-        return binding.root
+        container: ViewGroup?
+    ): FragmentCameraViewBinding {
+        return FragmentCameraViewBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreate() {
+        sharedGlue.settingOptionChanged.observe(viewLifecycleOwner) { key ->
+            if (key == PrefUtils.VideoResolution.key) {
 
+            }
+        }
         binding.recordingIndicator.hide()
         binding.mainCameraView.apply {
             setLifecycleOwner(viewLifecycleOwner)
@@ -113,7 +105,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera_view) {
             }
         }
     }
-
 
     private fun getPreviewSizes(context: Context): SizeSelector = SizeSelectors.or(
         SizeSelectors.and(

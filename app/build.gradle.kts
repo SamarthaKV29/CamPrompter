@@ -73,7 +73,9 @@ dependencies {
 
     implementation("com.otaliastudios:cameraview:2.7.2")
     implementation("com.google.android.exoplayer:exoplayer:2.19.1")
-    implementation("androidx.preference:preference:1.2.1")
+    implementation("androidx.preference:preference-ktx:1.2.1")
+
+    implementation("com.google.guava:guava:32.1.3-jre")
 //    implementation(project(mapOf("path" to ":app:libs:cameraview")))
 
     testImplementation("junit:junit:4.13.2")

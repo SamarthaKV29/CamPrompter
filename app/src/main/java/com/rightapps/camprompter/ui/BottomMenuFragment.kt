@@ -1,42 +1,30 @@
 package com.rightapps.camprompter.ui
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentBottomMenuBinding
-import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.Utility
+import com.rightapps.camprompter.utils.views.BoundFragment
+import com.rightapps.camprompter.utils.views.UISharedGlue
 
-class BottomMenuFragment : Fragment(R.layout.fragment_bottom_menu) {
+class BottomMenuFragment : BoundFragment<FragmentBottomMenuBinding>() {
     companion object {
         const val TAG = "BottomMenuFragment"
     }
 
-    private var _binding: FragmentBottomMenuBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
     private val sharedGlue: UISharedGlue by activityViewModels()
 
-    override fun onCreateView(
+    override fun setupViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentBottomMenuBinding.inflate(inflater, container, false)
-        return binding.root
+        container: ViewGroup?
+    ): FragmentBottomMenuBinding {
+        return FragmentBottomMenuBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onViewCreate() {
         binding.captureBtn.setOnClickListener {
             sharedGlue.isRecordingVideo.value = !(sharedGlue.isRecordingVideo.value ?: false)
         }
@@ -50,7 +38,7 @@ class BottomMenuFragment : Fragment(R.layout.fragment_bottom_menu) {
         }
 
         binding.settingsBtn.setOnClickListener {
-            Utility.showCamSettings(requireActivity() as MainActivity)
+            (requireActivity() as MainActivity).showBottomDrawer()
         }
 
         sharedGlue.isRecordingVideo.observe(viewLifecycleOwner) { isRecording ->

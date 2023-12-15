@@ -1,8 +1,9 @@
-package com.rightapps.camprompter.utils
+package com.rightapps.camprompter.utils.views
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
+import com.rightapps.camprompter.utils.FileUtils
 
 class UISharedGlue : ViewModel() {
     val isRecordingVideo = MutableLiveData<Boolean>()
@@ -11,6 +12,6 @@ class UISharedGlue : ViewModel() {
     val showDeleteButton = MutableLiveData<Boolean>()
     val isRecordingAudio = MutableLiveData<Boolean>()
     val galleryViewType = MutableLiveData<FileUtils.FileType>()
-
+    val settingOptionChanged = MutableLiveData<String>()
 
 }

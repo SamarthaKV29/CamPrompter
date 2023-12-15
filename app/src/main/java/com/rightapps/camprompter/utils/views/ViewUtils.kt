@@ -1,4 +1,4 @@
-package com.rightapps.camprompter.utils
+package com.rightapps.camprompter.utils.views
 
 import android.graphics.drawable.DrawableWrapper
 import android.util.Log

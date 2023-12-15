@@ -7,7 +7,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
-import com.rightapps.camprompter.utils.KAlertDialogType
+import com.rightapps.camprompter.utils.views.KAlertDialogType
 
 object PermissionUtils {
 

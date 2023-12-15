@@ -2,17 +2,18 @@ package com.rightapps.camprompter.utils
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.net.Uri
 import android.provider.Settings
+import android.util.Log
+import android.view.View
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
-import com.rightapps.camprompter.R
 import com.rightapps.camprompter.ui.MainActivity
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
-import com.rightapps.camprompter.ui.settings.CameraSettingsFragment
 import com.rightapps.camprompter.ui.settings.SettingsActivity
+import com.rightapps.camprompter.utils.views.KAlertDialogType
 
 
 object Utility {
@@ -32,14 +33,6 @@ object Utility {
     fun showGallery(context: Context) = launchActivity(context, GalleryActivity::class.java)
 
     fun showHome(context: Context) = launchActivity(context, MainActivity::class.java)
-
-    fun showCamSettings(activity: MainActivity) {
-        val animatingRelativeLayout = activity.binding.bottomDrawer
-        activity.supportFragmentManager.commit {
-            replace(R.id.bottomDrawerFragmentHolder, CameraSettingsFragment())
-        }
-        animatingRelativeLayout.show()
-    }
 
     fun showAppSettings(context: Context) = launchActivity(context, SettingsActivity::class.java)
 
@@ -74,5 +67,16 @@ object Utility {
             // Back is pressed... Finishing the activity
             onBackPress()
         }
+    }
+
+    fun isViewContains(view: View, p: Point): Boolean {
+        val l = IntArray(2)
+        view.getLocationOnScreen(l)
+        val x = l[0]
+        val y = l[1]
+        val w = view.width
+        val h = view.height
+        Log.d(TAG, "isViewContains: Point: $p, (x,y): ($x, $y), w: $w, h: $h")
+        return !(p.x < x || p.x > x + w || p.y < y || p.y > y + h)
     }
 }

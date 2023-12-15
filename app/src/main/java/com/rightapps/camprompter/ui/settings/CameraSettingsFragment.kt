@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentCameraSettingsBinding
 import com.rightapps.camprompter.utils.PrefUtils
-import com.rightapps.camprompter.utils.UISharedGlue
+import com.rightapps.camprompter.utils.views.UISharedGlue
 import com.rightapps.camprompter.utils.audio.MicManager
 import com.rightapps.camprompter.utils.views.CameraSettingsItemView
 
@@ -41,7 +41,8 @@ class CameraSettingsFragment : Fragment() {
                 requireContext(),
                 title = getString(R.string.settings_title_resolution),
                 key = PrefUtils.VideoResolution.key,
-                options = PrefUtils.VideoResolution.values()
+                options = PrefUtils.VideoResolution.values(),
+                onSettingChanged = handleSettingChanged
             ).getRoot()
         )
         val mics = MicManager.getAvailable(requireContext()).toTypedArray()
@@ -53,9 +54,16 @@ class CameraSettingsFragment : Fragment() {
                 requireContext(),
                 title = getString(R.string.settings_title_microphone),
                 key = PrefUtils.InputType.key,
-                options = mics
+                options = mics,
+                onSettingChanged = handleSettingChanged
             ).getRoot()
         )
-
     }
+
+    private val handleSettingChanged =
+        object : CameraSettingsItemView.SettingOptionChangedListener {
+            override fun onSettingOptionChanged(key: String) {
+                sharedGlue.settingOptionChanged.postValue(key)
+            }
+        }
 }

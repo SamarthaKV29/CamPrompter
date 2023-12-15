@@ -33,7 +33,7 @@ object MicManager {
             }.toSet()
         }
 
-    fun getAudioManager(context: Context) =
+    private fun getAudioManager(context: Context) =
         context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
     fun getRecorder(context: Context) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

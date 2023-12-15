@@ -17,7 +17,8 @@ class CameraSettingsItemView<E> @JvmOverloads constructor(
     defStyle: Int = 0,
     val title: String,
     private val key: String,
-    private val options: Array<E>?
+    private val options: Array<E>?,
+    private val onSettingChanged: SettingOptionChangedListener?
 ) : LinearLayoutCompat(context, attrs, defStyle) where E : Enum<E>, E : PrefUtils.SettingOption<E> {
     companion object {
         const val TAG = "CameraSettingsItemView"
@@ -29,7 +30,15 @@ class CameraSettingsItemView<E> @JvmOverloads constructor(
         binding = CamSettingsItemBinding.inflate(LayoutInflater.from(context))
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0, "", "", null)
+    constructor(context: Context, attrs: AttributeSet?) : this(
+        context,
+        attrs,
+        0,
+        "",
+        "",
+        null,
+        null
+    )
 
     init {
         binding.title.text = title
@@ -55,6 +64,7 @@ class CameraSettingsItemView<E> @JvmOverloads constructor(
                     button.isChecked = true
                     binding.state.text = options.find { it.ordinal == button.tag }?.text ?: ""
                     PrefUtils.setSelected(context, key, button.tag as Int)
+                    onSettingChanged?.onSettingOptionChanged(key)
                 }
             }
             tmpBtns.add(button)
@@ -65,4 +75,8 @@ class CameraSettingsItemView<E> @JvmOverloads constructor(
     }
 
     fun getRoot(): View = binding.root
+
+    interface SettingOptionChangedListener {
+        fun onSettingOptionChanged(key: String)
+    }
 }

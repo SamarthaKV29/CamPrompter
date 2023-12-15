@@ -2,35 +2,33 @@ package com.rightapps.camprompter.ui.gallery
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.developer.kalert.KAlertDialog
 import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.ActivityGalleryBinding
 import com.rightapps.camprompter.ui.gallery.fragments.GalleryViewFragment
 import com.rightapps.camprompter.utils.FileUtils
-import com.rightapps.camprompter.utils.KAlertDialogType
-import com.rightapps.camprompter.utils.UISharedGlue
 import com.rightapps.camprompter.utils.Utility
-import com.rightapps.camprompter.utils.ViewUtils.fixCheckStateOnIcon
+import com.rightapps.camprompter.utils.views.BoundActivity
+import com.rightapps.camprompter.utils.views.KAlertDialogType
+import com.rightapps.camprompter.utils.views.UISharedGlue
+import com.rightapps.camprompter.utils.views.ViewUtils.fixCheckStateOnIcon
 
-class GalleryActivity : AppCompatActivity() {
+class GalleryActivity : BoundActivity<ActivityGalleryBinding>() {
     companion object {
         const val TAG: String = "GalleryActivity"
 
-        enum class GalleryFragmentType(value: Int) {
-            GalleryView(0),
-            GalleryVideoView(1)
+        enum class GalleryFragmentType {
+            GalleryView,
+            GalleryVideoView
         }
     }
 
     private val sharedGlue: UISharedGlue by viewModels()
-    private lateinit var binding: ActivityGalleryBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityGalleryBinding.inflate(layoutInflater)
+    override fun init() {
         setContentView(binding.root)
 
         setUpTopbar()
@@ -43,6 +41,10 @@ class GalleryActivity : AppCompatActivity() {
         Utility.registerBackPressListener(this) {
             onBackPress()
         }
+    }
+
+    override fun setupViewBinding(inflater: LayoutInflater): ActivityGalleryBinding {
+        return ActivityGalleryBinding.inflate(layoutInflater)
     }
 
     private fun loadGalleryView(type: FileUtils.FileType) {

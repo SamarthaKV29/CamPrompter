@@ -22,7 +22,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <!--        style="@style/DialogAnimation"-->
-    <com.rightapps.camprompter.utils.AnimatingRelativeLayout
+    <com.rightapps.camprompter.utils.views.AnimatingRelativeLayout
         android:id="@+id/bottomDrawer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +47,6 @@
             android:layout_height="match_parent"
 
             />
-    </com.rightapps.camprompter.utils.AnimatingRelativeLayout>
+    </com.rightapps.camprompter.utils.views.AnimatingRelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

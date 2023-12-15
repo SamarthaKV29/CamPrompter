@@ -1,4 +1,4 @@
-package com.rightapps.camprompter.utils
+package com.rightapps.camprompter.utils.views
 
 import android.content.Context
 import android.util.AttributeSet

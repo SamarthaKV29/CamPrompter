@@ -1,23 +1,20 @@
 package com.rightapps.camprompter.ui.gallery.fragments
 
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.FragmentGalleryVideoViewBinding
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
-import com.rightapps.camprompter.utils.UISharedGlue
+import com.rightapps.camprompter.utils.views.BoundFragment
+import com.rightapps.camprompter.utils.views.UISharedGlue
 
 class GalleryVideoViewFragment(private val uri: Uri) :
-    Fragment(R.layout.fragment_gallery_video_view) {
+    BoundFragment<FragmentGalleryVideoViewBinding>() {
     companion object {
         const val TAG: String = "GalleryVideoViewFragment"
     }
@@ -25,23 +22,15 @@ class GalleryVideoViewFragment(private val uri: Uri) :
     private val sharedGlue: UISharedGlue by activityViewModels()
     private lateinit var player: ExoPlayer
 
-    private var _binding: FragmentGalleryVideoViewBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
+    override fun setupViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentGalleryVideoViewBinding.inflate(inflater, container, false)
-        return binding.root
+        container: ViewGroup?
+    ): FragmentGalleryVideoViewBinding {
+        return FragmentGalleryVideoViewBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreate() {
         sharedGlue.galleryFragmentType.value =
             GalleryActivity.Companion.GalleryFragmentType.GalleryVideoView
 
@@ -57,6 +46,7 @@ class GalleryVideoViewFragment(private val uri: Uri) :
         )
         player.tryPlay()
     }
+
 
     override fun onStop() {
         super.onStop()

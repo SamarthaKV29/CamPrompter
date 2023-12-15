@@ -1,4 +1,4 @@
-package com.rightapps.camprompter.utils
+package com.rightapps.camprompter.utils.views
 
 enum class KAlertDialogType(value: Int) {
     NORMAL_TYPE(0),
