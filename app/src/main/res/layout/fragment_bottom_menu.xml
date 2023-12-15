@@ -9,26 +9,27 @@
     android:orientation="horizontal"
     android:weightSum="4">
 
-    <!--    <RelativeLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout_weight="1"-->
-    <!--        android:gravity="center">-->
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
 
-    <!--        <com.google.android.material.materialswitch.MaterialSwitch-->
-    <!--            android:id="@+id/toggleMic"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:checked="true"-->
-    <!--            android:scaleX="1.2"-->
-    <!--            android:scaleY="1.2"-->
-    <!--            app:thumbIcon="@drawable/mic_icon"-->
-    <!--            app:thumbIconTint="?attr/colorOnPrimary"-->
-    <!--            app:thumbTint="?attr/colorPrimary"-->
-    <!--            app:trackDecorationTint="?attr/colorPrimaryVariant"-->
-    <!--            app:trackTint="@color/md_indigo_300" />-->
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/toggleAudioVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            app:thumbIcon="@drawable/av_toggle_sw_icon"
+            app:thumbIconTint="?attr/colorOnPrimary"
+            app:thumbTint="?attr/colorPrimary"
+            app:trackDecorationTint="?attr/colorPrimaryVariant"
+            app:trackTint="@color/md_indigo_300" />
 
-    <!--    </RelativeLayout>-->
+    </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -45,7 +46,7 @@
             android:text=""
             android:textOff=""
             android:textOn=""
-            app:icon="@drawable/baseline_photo_library_24" />
+            app:icon="@drawable/baseline_video_library_64" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -53,26 +54,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="1">
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/captureAudioBtn"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/capture_audio"
-            android:backgroundTint="@color/md_red_400"
-            android:contentDescription="@string/cd_recording"
-            android:text=""
-            android:textOff=""
-            android:textOn="" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="1">
-
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/captureBtn"
@@ -95,10 +76,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settingsBtn"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerInParent="true"
-            style="@style/Widget.Material3.Button.IconButton.Filled"
             android:contentDescription="@string/cd_open_app_settings"
             app:icon="@drawable/baseline_settings_24" />
 

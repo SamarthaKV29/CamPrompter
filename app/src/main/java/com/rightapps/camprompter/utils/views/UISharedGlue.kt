@@ -13,5 +13,6 @@ class UISharedGlue : ViewModel() {
     val isRecordingAudio = MutableLiveData<Boolean>()
     val galleryViewType = MutableLiveData<FileUtils.FileType>()
     val settingOptionChanged = MutableLiveData<String>()
+    val avSwitch = MutableLiveData<Boolean>()
 
 }

@@ -26,11 +26,21 @@ class BottomMenuFragment : BoundFragment<FragmentBottomMenuBinding>() {
 
     override fun onViewCreate() {
         binding.captureBtn.setOnClickListener {
-            sharedGlue.isRecordingVideo.value = !(sharedGlue.isRecordingVideo.value ?: false)
+            val isVideo = binding.toggleAudioVideo.isChecked
+            if (isVideo) sharedGlue.isRecordingVideo.postValue(
+                !(sharedGlue.isRecordingVideo.value ?: false)
+            )
+            else sharedGlue.isRecordingAudio.postValue(
+                !(sharedGlue.isRecordingAudio.value ?: false)
+            )
         }
 
-        binding.captureAudioBtn.setOnClickListener {
-            sharedGlue.isRecordingAudio.value = !(sharedGlue.isRecordingAudio.value ?: false)
+        binding.toggleAudioVideo.setOnCheckedChangeListener { _, isChecked ->
+            binding.captureBtn.setupRecordingBtn(
+                false,
+                if (isChecked) R.drawable.capture else R.drawable.capture_audio
+            )
+            sharedGlue.avSwitch.postValue(isChecked)
         }
 
         binding.previewBtn.setOnClickListener {
@@ -47,7 +57,7 @@ class BottomMenuFragment : BoundFragment<FragmentBottomMenuBinding>() {
             binding.settingsBtn.isEnabled = !isRecording
         }
         sharedGlue.isRecordingAudio.observe(viewLifecycleOwner) { isRecording ->
-            binding.captureAudioBtn.setupRecordingBtn(isRecording, R.drawable.capture_audio)
+            binding.captureBtn.setupRecordingBtn(isRecording, R.drawable.capture_audio)
             binding.previewBtn.isEnabled = !isRecording
             binding.settingsBtn.isEnabled = !isRecording
         }

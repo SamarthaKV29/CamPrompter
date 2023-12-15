@@ -47,6 +47,15 @@ class MainActivity : BoundActivity<ActivityMainBinding>() {
 
         setupBottomDrawer()
 
+        sharedGlue.avSwitch.observe(this) { isVideo ->
+            supportFragmentManager.commit {
+                replace(
+                    R.id.mainFragmentHolder,
+                    if (isVideo) CameraFragment() else RecordingFragment()
+                )
+            }
+        }
+
         sharedGlue.isRecordingAudio.observe(this) { isRecording ->
             supportFragmentManager.fragments.find { it.isVisible }?.let { visibleFragment ->
                 if (isRecording && visibleFragment !is RecordingFragment) {

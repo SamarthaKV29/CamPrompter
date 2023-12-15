@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.snackbar.Snackbar
 import com.otaliastudios.cameraview.CameraListener
+import com.otaliastudios.cameraview.VideoResult
 import com.otaliastudios.cameraview.gesture.Gesture
 import com.otaliastudios.cameraview.gesture.GestureAction
 import com.otaliastudios.cameraview.size.AspectRatio
@@ -74,6 +76,12 @@ class CameraFragment : BoundFragment<FragmentCameraViewBinding>() {
 
             addCameraListener(object : CameraListener() {
                 private var oldJob: Job? = null
+
+                override fun onVideoTaken(result: VideoResult) {
+                    super.onVideoTaken(result)
+                    Snackbar.make(binding.root, "Video saved successfully!", Snackbar.LENGTH_SHORT)
+                        .show()
+                }
 
                 override fun onVideoRecordingStart() {
                     super.onVideoRecordingStart()
