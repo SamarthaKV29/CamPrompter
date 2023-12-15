@@ -45,11 +45,11 @@ class CameraFragment : BoundFragment<FragmentCameraViewBinding>() {
     }
 
     override fun onViewCreate() {
-        sharedGlue.settingOptionChanged.observe(viewLifecycleOwner) { key ->
-            if (key == PrefUtils.VideoResolution.key) {
-
-            }
-        }
+//        sharedGlue.settingOptionChanged.observe(viewLifecycleOwner) { key ->
+//            if (key == PrefUtils.VideoResolution.key) {
+//
+//            }
+//        }
         binding.recordingIndicator.hide()
         binding.mainCameraView.apply {
             setLifecycleOwner(viewLifecycleOwner)

@@ -7,46 +7,25 @@
     android:background="@color/md_grey_800"
     android:gravity="center"
     android:orientation="horizontal"
-    android:weightSum="4">
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center">
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/toggleAudioVideo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            app:thumbIcon="@drawable/av_toggle_sw_icon"
-            app:thumbIconTint="?attr/colorOnPrimary"
-            app:thumbTint="?attr/colorPrimary"
-            app:trackDecorationTint="?attr/colorPrimaryVariant"
-            app:trackTint="@color/md_indigo_300" />
-
-    </RelativeLayout>
+    android:weightSum="5">
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="1">
+        android:layout_weight="2"
+        android:gravity="center">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/previewBtn"
-            style="@style/Widget.Material3.Button.IconButton.Filled"
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/toggleAudioVideo"
+            style="@style/SwitchStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/cd_gallery"
-            android:text=""
-            android:textOff=""
-            android:textOn=""
-            app:icon="@drawable/baseline_video_library_64" />
+            android:checked="true"
+            android:enabled="true"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            app:thumbIcon="@drawable/av_toggle_sw_icon"
+            app:thumbIconTint="?attr/colorOnPrimary" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -62,28 +41,33 @@
             android:layout_centerInParent="true"
             android:background="@drawable/capture"
             android:backgroundTint="@color/md_red_400"
-            android:contentDescription="@string/cd_take_video"
-            android:text=""
-            android:textOff=""
-            android:textOn="" />
+            android:contentDescription="@string/cd_take_video" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="1">
+        android:layout_weight="2"
+        android:gravity="center">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settingsBtn"
             style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_centerInParent="true"
             android:contentDescription="@string/cd_open_app_settings"
+            android:gravity="center"
             app:icon="@drawable/baseline_settings_24" />
 
-    </RelativeLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/previewBtn"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/cd_gallery"
+            android:gravity="center"
+            app:icon="@drawable/baseline_video_library_64" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

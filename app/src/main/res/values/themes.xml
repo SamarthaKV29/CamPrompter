@@ -41,4 +41,11 @@
         <item name="iconTint">@color/md_grey_800</item>
     </style>
 
+    <style name="SwitchStyle" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/switch_thumb_selector</item>
+        <item name="trackDecorationTint">@color/switch_thumb_selector</item>
+        <item name="trackTint">@color/switch_track_selector</item>
+
+    </style>
+
 </resources>
