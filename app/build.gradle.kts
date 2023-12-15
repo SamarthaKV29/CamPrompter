@@ -12,7 +12,7 @@ android {
         minSdk = 27
         targetSdk = 33
         versionCode = 2
-        versionName = "1.1-alpha"
+        versionName = "1.2-alpha"
         base.archivesBaseName = "${applicationId}-v${versionName}"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,7 +32,7 @@ android {
 }
 val keyPath = "../../../keys"
 val signingJks = "${keyPath}/main-campropter.jks"
-val passphrase = file("${keyPath}/camprompter.passphrase").readText().trim()
+val passphrase = file("${keyPath}/camprompter.passphrase").takeIf { it.exists() }?.readText()?.trim() ?: ""
 
 if (file(signingJks).exists()) run {
     android {

@@ -5,9 +5,9 @@ plugins {
 }
 
 buildscript {
-    extra["minSdkVersion"] = 15
-    extra["compileSdkVersion"] = 31
-    extra["targetSdkVersion"] = 31
+//    extra["minSdkVersion"] = 15
+//    extra["compileSdkVersion"] = 31
+//    extra["targetSdkVersion"] = 31
     repositories {
         google()
         mavenCentral()
