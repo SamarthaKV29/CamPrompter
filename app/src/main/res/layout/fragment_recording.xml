@@ -5,8 +5,9 @@
     android:layout_height="match_parent">
 
     <com.rightapps.camprompter.utils.audio.AmplitudeWaveFormView
+        android:id="@+id/waveform"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/_200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

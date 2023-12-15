@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import com.google.common.collect.EvictingQueue
 import com.rightapps.camprompter.R
@@ -78,6 +79,11 @@ class AmplitudeWaveFormView : View {
         }
     }
 
+    fun updateAmplitude(amplitude: Int) {
+        mAmplitude = amplitude
+        postInvalidate()
+    }
+
     override fun onSaveInstanceState(): Parcelable = Bundle().apply {
         putFloatArray("lines", mPointQueue.toFloatArray())
         putInt("sample", mCurrentSample)
@@ -104,10 +110,12 @@ class AmplitudeWaveFormView : View {
     }
 
     fun start() {
+        Log.d(TAG, "start: ")
         mIsStarted.set(true)
     }
 
     fun stop() {
+        Log.d(TAG, "stop: ")
         mIsStarted.set(false)
     }
 

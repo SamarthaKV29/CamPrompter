@@ -3,13 +3,11 @@ package com.rightapps.camprompter.utils.views
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 
 abstract class BoundActivity<ViewBindingType : ViewBinding> : AppCompatActivity(),
-    LifecycleObserver, DefaultLifecycleObserver {
+    LifecycleObserver {
 
     companion object {
         private const val TAG = "BoundActivity"
@@ -38,19 +36,15 @@ abstract class BoundActivity<ViewBindingType : ViewBinding> : AppCompatActivity(
 
     abstract fun setupViewBinding(inflater: LayoutInflater): ViewBindingType
 
-    // Clears the binding and removes the observer when the activity is destroyed.
-    override fun onDestroy(owner: LifecycleOwner) {
-        _binding = null
-        lifecycle.removeObserver(this)
-        super<AppCompatActivity>.onDestroy()
-    }
 
-    /*
-     * Safe call method, just in case, if anything is messed up and lifecycle Event does not gets
-     * called.
-     */
-    override fun onDestroy() {
-        _binding = null
-        super<AppCompatActivity>.onDestroy()
-    }
+//    /*
+//     * Safe call method, just in case, if anything is messed up and lifecycle Event does not gets
+//     * called.
+//     */
+//    // Clears the binding and removes the observer when the activity is destroyed.
+//    override fun onDestroy() {
+//        lifecycle.removeObserver(this)
+//        _binding = null
+//        super.onDestroy()
+//    }
 }

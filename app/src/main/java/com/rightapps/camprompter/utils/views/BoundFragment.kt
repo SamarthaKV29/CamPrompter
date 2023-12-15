@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.viewbinding.ViewBinding
 
-abstract class BoundFragment<ViewBindingType : ViewBinding> : Fragment(), LifecycleObserver,
-    DefaultLifecycleObserver {
+abstract class BoundFragment<ViewBindingType : ViewBinding> : Fragment(), LifecycleObserver {
 
     companion object {
         private const val TAG = "BoundFragment"
@@ -46,19 +44,15 @@ abstract class BoundFragment<ViewBindingType : ViewBinding> : Fragment(), Lifecy
 
     abstract fun onViewCreate()
 
-    // Clears the binding and removes the observer when the Fragment's views get destroyed.
-    override fun onDestroy() {
-        _binding = null
-        viewLifecycleOwner.lifecycle.removeObserver(this)
-        super<Fragment>.onDestroy()
-    }
+//
+//    /*
+//     * Safe call method, just in case, if anything is messed up and lifecycle Event does not gets
+//     * called.
+//     */
+//    // Clears the binding and removes the observer when the Fragment's views get destroyed.
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//    }
+//
 
-    /*
-     * Safe call method, just in case, if anything is messed up and lifecycle Event does not gets
-     * called.
-     */
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
 }

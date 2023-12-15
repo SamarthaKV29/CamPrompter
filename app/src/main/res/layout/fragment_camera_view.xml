@@ -12,7 +12,7 @@
         app:cameraAudio="stereo"
         app:cameraAudioCodec="aac"
         app:cameraDrawHardwareOverlays="true"
-        app:cameraEngine="camera1"
+        app:cameraEngine="camera2"
         app:cameraFacing="front"
         app:cameraFlash="auto"
         app:cameraHdr="on"

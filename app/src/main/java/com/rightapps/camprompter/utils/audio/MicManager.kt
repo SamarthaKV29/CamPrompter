@@ -62,15 +62,25 @@ object MicManager {
         }
 
     fun MediaRecorder.startSafely() = try {
+        Log.d(TAG, "startSafely: ")
         start()
     } catch (e: Exception) {
         Log.w(TAG, "playSafely: Failed to start recorder: ${e.localizedMessage}")
     }
 
     fun MediaRecorder.stopSafely() = try {
+        Log.d(TAG, "stopSafely: ")
         stop()
+        reset()
+    } catch (e: Exception) {
+        Log.w(TAG, "stopSafely: Failed to stop recorder: ${e.localizedMessage}")
+    }
+
+    fun MediaRecorder.releaseSafely() = try {
+        Log.d(TAG, "releaseSafely: ")
         release()
     } catch (e: Exception) {
-        Log.d(TAG, "stopSafely: Failed to stop recorder: ${e.localizedMessage}")
+        Log.w(TAG, "releaseSafely: Failed to release recorder: ${e.localizedMessage}")
     }
+
 }

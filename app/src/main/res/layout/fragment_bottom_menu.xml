@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="@color/md_grey_800"
     android:gravity="center"
     android:orientation="horizontal"
     android:weightSum="4">
@@ -28,25 +30,26 @@
 
     <!--    </RelativeLayout>-->
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="1">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/previewBtn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/baseline_photo_library_24"
             android:contentDescription="@string/cd_gallery"
             android:text=""
             android:textOff=""
-            android:textOn="" />
+            android:textOn=""
+            app:icon="@drawable/baseline_photo_library_24" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="1">
@@ -65,7 +68,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="1">
@@ -85,7 +88,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="1">
@@ -95,8 +98,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/baseline_settings_24"
-            android:contentDescription="@string/cd_open_app_settings" />
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:contentDescription="@string/cd_open_app_settings"
+            app:icon="@drawable/baseline_settings_24" />
 
     </RelativeLayout>
 

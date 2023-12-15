@@ -23,7 +23,7 @@
     <!-- Base application theme. -->
     <style name="Theme.CamPrompter" parent="Base.Theme.CamPrompter">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/md_light_green_400</item>
+        <item name="colorPrimary">@color/md_light_green_A700</item>
         <item name="colorPrimaryVariant">@color/md_light_green_700</item>
         <item name="colorOnPrimary">@color/md_green_900</item>
         <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
@@ -34,6 +34,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="materialIconButtonFilledStyle">@style/SettingsOptionBtn</item>
+    </style>
+
+    <style name="SettingsOptionBtn" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="iconTint">@color/md_grey_800</item>
     </style>
 
 </resources>

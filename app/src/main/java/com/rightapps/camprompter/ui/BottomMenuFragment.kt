@@ -44,10 +44,12 @@ class BottomMenuFragment : BoundFragment<FragmentBottomMenuBinding>() {
         sharedGlue.isRecordingVideo.observe(viewLifecycleOwner) { isRecording ->
             binding.captureBtn.setupRecordingBtn(isRecording, R.drawable.capture)
             binding.previewBtn.isEnabled = !isRecording
+            binding.settingsBtn.isEnabled = !isRecording
         }
-        sharedGlue.isRecordingAudio.observe(viewLifecycleOwner) { isRecordingAudio ->
-            binding.captureAudioBtn.setupRecordingBtn(isRecordingAudio, R.drawable.capture_audio)
-            binding.previewBtn.isEnabled = !isRecordingAudio
+        sharedGlue.isRecordingAudio.observe(viewLifecycleOwner) { isRecording ->
+            binding.captureAudioBtn.setupRecordingBtn(isRecording, R.drawable.capture_audio)
+            binding.previewBtn.isEnabled = !isRecording
+            binding.settingsBtn.isEnabled = !isRecording
         }
     }
 

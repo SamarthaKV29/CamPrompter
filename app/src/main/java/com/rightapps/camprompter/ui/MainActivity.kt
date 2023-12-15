@@ -3,7 +3,6 @@ package com.rightapps.camprompter.ui
 import PermissionUtils
 import android.app.ActionBar.LayoutParams
 import android.content.res.Configuration
-import android.media.MediaRecorder
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,10 +14,6 @@ import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.ActivityMainBinding
 import com.rightapps.camprompter.ui.settings.CameraSettingsFragment
 import com.rightapps.camprompter.utils.Utility
-import com.rightapps.camprompter.utils.audio.MicManager
-import com.rightapps.camprompter.utils.audio.MicManager.prepareSafely
-import com.rightapps.camprompter.utils.audio.MicManager.startSafely
-import com.rightapps.camprompter.utils.audio.MicManager.stopSafely
 import com.rightapps.camprompter.utils.views.BoundActivity
 import com.rightapps.camprompter.utils.views.KAlertDialogType
 import com.rightapps.camprompter.utils.views.UISharedGlue
@@ -29,9 +24,8 @@ class MainActivity : BoundActivity<ActivityMainBinding>() {
         var permissionRequestCount = 0
     }
 
-    private val sharedGlue: UISharedGlue by viewModels()
     private var topDialog: KAlertDialog? = null
-    private var recorder: MediaRecorder? = null
+    private val sharedGlue: UISharedGlue by viewModels()
 
     override fun init() {
         setContentView(binding.root)
@@ -52,6 +46,25 @@ class MainActivity : BoundActivity<ActivityMainBinding>() {
         }
 
         setupBottomDrawer()
+
+        sharedGlue.isRecordingAudio.observe(this) { isRecording ->
+            supportFragmentManager.fragments.find { it.isVisible }?.let { visibleFragment ->
+                if (isRecording && visibleFragment !is RecordingFragment) {
+                    supportFragmentManager.commit {
+                        replace(R.id.mainFragmentHolder, RecordingFragment())
+                    }
+                }
+            }
+        }
+        sharedGlue.isRecordingVideo.observe(this) { isRecording ->
+            supportFragmentManager.fragments.find { it.isVisible }?.let { visibleFragment ->
+                if (isRecording && visibleFragment !is CameraFragment) {
+                    supportFragmentManager.commit {
+                        replace(R.id.mainFragmentHolder, CameraFragment())
+                    }
+                }
+            }
+        }
     }
 
     override fun setupViewBinding(inflater: LayoutInflater): ActivityMainBinding {
@@ -77,29 +90,11 @@ class MainActivity : BoundActivity<ActivityMainBinding>() {
         super.onStart()
         PermissionUtils.checkPermissions(this)
         permissionRequestCount += 1
-
-        sharedGlue.isRecordingAudio.observe(this) { isRecordingAudio ->
-            if (isRecordingAudio) {
-                recorder = MicManager.getRecorder(applicationContext).apply {
-                    prepareSafely(applicationContext) { _, what, _ ->
-                        if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
-                            stopSafely()
-                            sharedGlue.isRecordingAudio.value = false
-                        }
-                    }
-                    startSafely()
-                }
-            } else {
-                recorder?.apply { stopSafely() }
-            }
-
-
 //            Not working
 //            binding.topStatusBar.statusBarAudioCapture.apply {
 //                isVisible = isRecordingAudio
 //                DrawableCompat.setTint(this.drawable, getColor(R.color.white))
 //            }
-        }
     }
 
     public fun showBottomDrawer() {
