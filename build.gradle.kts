@@ -15,7 +15,7 @@ buildscript {
 
     dependencies {
         classpath("io.deepmedia.tools:publisher:0.6.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
     }
 }
 
