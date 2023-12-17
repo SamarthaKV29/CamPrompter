@@ -2,10 +2,14 @@ package com.rightapps.camprompter.ui
 
 import PermissionUtils
 import android.app.ActionBar.LayoutParams
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.commit
@@ -14,6 +18,7 @@ import com.rightapps.camprompter.R
 import com.rightapps.camprompter.databinding.ActivityMainBinding
 import com.rightapps.camprompter.ui.settings.CameraSettingsFragment
 import com.rightapps.camprompter.utils.Utility
+import com.rightapps.camprompter.utils.Utility.getPackageInfoCompat
 import com.rightapps.camprompter.utils.views.BoundActivity
 import com.rightapps.camprompter.utils.views.KAlertDialogType
 import com.rightapps.camprompter.utils.views.UISharedGlue
@@ -26,6 +31,10 @@ class MainActivity : BoundActivity<ActivityMainBinding>() {
 
     private var topDialog: KAlertDialog? = null
     private val sharedGlue: UISharedGlue by viewModels()
+
+    override fun setupViewBinding(inflater: LayoutInflater): ActivityMainBinding {
+        return ActivityMainBinding.inflate(layoutInflater)
+    }
 
     override fun init() {
         setContentView(binding.root)
@@ -76,10 +85,6 @@ class MainActivity : BoundActivity<ActivityMainBinding>() {
         }
     }
 
-    override fun setupViewBinding(inflater: LayoutInflater): ActivityMainBinding {
-        return ActivityMainBinding.inflate(layoutInflater)
-    }
-
     private fun setupBottomDrawer() {
         // Cannot be done via xml
         binding.bottomDrawer.background.alpha = 225
@@ -104,9 +109,34 @@ class MainActivity : BoundActivity<ActivityMainBinding>() {
 //                isVisible = isRecordingAudio
 //                DrawableCompat.setTint(this.drawable, getColor(R.color.white))
 //            }
+        checkSpeechServiceAvailability()
     }
 
-    public fun showBottomDrawer() {
+    private fun checkSpeechServiceAvailability() =
+        applicationContext.packageManager.getPackageInfoCompat(
+            "com.google.android.tts",
+            PackageManager.GET_ACTIVITIES
+        )?.let {
+            Toast.makeText(this, "Speech Services available", Toast.LENGTH_SHORT).show()
+        } ?: showSpeechServiceRequiredHint()
+
+    private fun showSpeechServiceRequiredHint() = Utility.showSimpleAlertDialog(
+        this,
+        "Speech services required",
+        "Please install Speech services from Google Play Store and download English language for best results!",
+        alertType = KAlertDialogType.WARNING_TYPE,
+        onConfirm = {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=com.google.android.tts")
+                )
+            )
+        },
+        cancelText = "Ignore",
+    )
+
+    fun showBottomDrawer() {
         supportFragmentManager.commit {
             replace(R.id.bottomDrawerFragmentHolder, CameraSettingsFragment())
         }

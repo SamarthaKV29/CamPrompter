@@ -106,7 +106,7 @@ class CameraFragment : BoundFragment<FragmentCameraViewBinding>() {
                                 context,
                                 arrayOf(outputFile.toString()),
                                 null, null
-                            );
+                            )
                         }
                     }
                 }

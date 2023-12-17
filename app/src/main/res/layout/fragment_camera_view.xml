@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--        app:cameraAudioCodec="aac"-->
     <com.otaliastudios.cameraview.CameraView
         android:id="@+id/mainCameraView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:keepScreenOn="true"
-        app:cameraAudio="stereo"
-        app:cameraAudioCodec="aac"
+        app:cameraAudio="off"
         app:cameraDrawHardwareOverlays="true"
         app:cameraEngine="camera2"
         app:cameraFacing="front"

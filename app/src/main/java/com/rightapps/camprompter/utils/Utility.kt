@@ -2,14 +2,18 @@ package com.rightapps.camprompter.utils
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.Point
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.developer.kalert.KAlertDialog
+import com.rightapps.camprompter.R
 import com.rightapps.camprompter.ui.MainActivity
 import com.rightapps.camprompter.ui.gallery.GalleryActivity
 import com.rightapps.camprompter.ui.settings.SettingsActivity
@@ -48,7 +52,9 @@ object Utility {
         context: Context,
         title: String = "Please confirm!",
         message: String = "Are you sure?",
+        confirmText: String = "OK",
         onConfirm: () -> Unit = {},
+        cancelText: String = "Cancel",
         onCancel: () -> Unit = {},
         cancelable: Boolean = false,
         alertType: KAlertDialogType = KAlertDialogType.NORMAL_TYPE,
@@ -79,4 +85,17 @@ object Utility {
         Log.d(TAG, "isViewContains: Point: $p, (x,y): ($x, $y), w: $w, h: $h")
         return !(p.x < x || p.x > x + w || p.y < y || p.y > y + h)
     }
+
+    fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int = 0): PackageInfo? =
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
+            } else {
+                @Suppress("DEPRECATION") getPackageInfo(packageName, flags)
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "getPackageInfoCompat: Package $packageName not found!")
+            null
+        }
+
 }
